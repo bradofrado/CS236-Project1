@@ -120,20 +120,75 @@ private:
         }
     }
 
-    void scanString(TokenType& type, int& size)
+    void scanString(const string input, TokenType& type, int& size)
     {
+        int i = 0;
+        while (input.at(i) != '\'' && i != input.length())
+        {
+            i++;
 
+            if (i < input.length() -1 && input.at(i) == '\'' && input.at(i+1) == '\'')
+            {
+                i += 2;
+            }
+        }
+
+        //If we hit the end of file and 
+        if (i == input.length())
+        {
+            type = UNDEFINED;
+        }
+        else
+        {
+            i++;
+            type = STRING;
+        }
+
+        size = i;
     }
 
-    void scanComment(TokenType& type, int& size)
+    void scanComment(const string input, TokenType& type, int& size)
     {
+        int i = 0;
+        bool multiline = false;
+        while (!multiline && input.at(i) != '\\n' && i != input.length())
+        {
+            if (input.at(i) == '|')
+            {
+                multiline = true;
+            }
+            i++;            
+        }
 
+        if (multiline)
+        {
+            while (i < input.length() - 1 && input.at(i) != '|' && input.at(i+1) != '#')
+            {
+                i++;
+            }
+
+            i++;
+        }
+
+        //If we hit the end of file and 
+        if (i == input.length())
+        {
+            type = UNDEFINED;
+        }
+        else
+        {
+            i++;
+            type = COMMENT;
+        }
+
+        size = i;
     }
 
-    void scanIdentifier(TokenType& type, int& size)
+    void scanIdentifier(const string input, TokenType& type, int& size)
     {
-
+        
     }
+
 public:
     Scanner(const string& input): input(input) {}
     Token scanToken()
@@ -206,10 +261,10 @@ public:
                 size = 1;
                 break;
             case '\'':
-                scanString(type, size);
+                scanString(input, type, size);
                 break;
             case '#':
-                scanComment(type, size);
+                scanComment(input, type, size);
                 break;
             case 'S':
                 //keyword = SCHEMES;
