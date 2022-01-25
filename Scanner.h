@@ -45,11 +45,22 @@ private:
             }
         }
 
-        type = keyword;
-        size = keywordName.length();
-        currLineNumber = lineNum;
+		//The next token must be either a space or a single character token
+		if ((tryScanKeyword(input.substr(keywordName.length()), type, size, currLineNumber) && !isMultiKeyWord(type)) || (isspace(input.at(keywordName.length()))))
+		{
 
-        return true;
+            type = keyword;
+            size = keywordName.length();
+            currLineNumber = lineNum;
+
+            return true;
+		}
+
+		currLineNumber = lineNum;
+        size = keywordName.length();
+		type = ID;
+		return false;
+
     }
 
     
@@ -138,7 +149,11 @@ private:
         }
         else
         {
-            i++;
+						if (input.at(i) == '\n')
+						{
+							currLineNumber--;
+						}
+            
             type = COMMENT;
         }
 

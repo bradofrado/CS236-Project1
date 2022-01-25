@@ -1,5 +1,4 @@
-(COMMENT,"# try all keywords
-",3)
+(COMMENT,"# try all keywords",3)
 (SCHEMES,"Schemes",5)
 (FACTS,"Facts",6)
 (RULES,"Rules",7)

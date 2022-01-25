@@ -1,5 +1,4 @@
-(COMMENT,"# unterminated string
-",3)
+(COMMENT,"# unterminated string",3)
 (STRING,"'good string'",5)
 (UNDEFINED,"'bad string
 

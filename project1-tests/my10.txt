@@ -15,7 +15,7 @@
 (COMMA,",",6)
 (ID,"Y",6)
 (RIGHT_PAREN,")",6)
-(COLOR_DASH,":-",6)
+(COLON_DASH,":-",6)
 (ID,"marriedTo",6)
 (LEFT_PAREN,"(",6)
 (ID,"Y",6)
