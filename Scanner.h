@@ -29,7 +29,7 @@ private:
         return cI1 == cI2;
     }
 
-    bool scanKeyword(const string& input, TokenType keyword, TokenType& type, int& size)
+    bool scanKeyword(const string& input, TokenType keyword, TokenType& type, int& size, int& lineNum)
     {
         string keywordName = Token::typeName(keyword);
         char c;
@@ -47,23 +47,31 @@ private:
 
         type = keyword;
         size = keywordName.length();
+        currLineNumber = lineNum;
 
         return true;
     }
 
     
 
-    void scanString(const string input, TokenType& type, int& size)
+    void scanString(const string input, TokenType& type, int& size, int& lineNum)
     {
         if (input.at(0) != '\'')
         {
             throw std::invalid_argument("Only call scan string if this input starts with a string token");
         }
 
+        lineNum = currLineNumber;
+
         int i = 1;
         while (i != input.length() && input.at(i) != '\'')
         {
             i++;
+
+            if (i != input.length() && input.at(i) == '\n')
+            {
+                currLineNumber++;
+            }
 
             if (i < input.length() -1 && input.at(i) == '\'' && input.at(i+1) == '\'')
             {
@@ -85,8 +93,10 @@ private:
         size = i;
     }
 
-    void scanComment(const string& input, TokenType& type, int& size)
+    void scanComment(const string& input, TokenType& type, int& size, int& lineNum)
     {
+        lineNum = currLineNumber;
+
         int i = 0;
         bool multiline = false;
         while (!multiline && i != input.length() && input.at(i) != '\n')
@@ -98,12 +108,22 @@ private:
             i++;            
         }
 
+        if (i != input.length() && input.at(i) == '\n')
+        {
+            currLineNumber++;
+        }
+
         if (multiline)
         {
             while (i < input.length() - 1 && input.at(i) != '|' && input.at(i+1) != '#')
             {
                 i++;
-            }
+
+                if (input.at(i) == '\n')
+                {
+                    currLineNumber++;
+                }
+            }            
 
             i++;
         }
@@ -150,7 +170,7 @@ private:
         return cI >= A && cI <= Z || cI >= a && cI <= z;
     }
 
-    void scanIdentifier(const string& input, TokenType& type, int& size)
+    void scanIdentifier(const string& input, TokenType& type, int& size, int& lineNum)
     {
         if (!isLetter(input.at(0)))
         {
@@ -162,10 +182,16 @@ private:
         bool isKeyword = false;
         int i = size;
         
-        while (!tryScanKeyword(input.substr(i), type, size) && !isMultiKeyWord(type))
+        lineNum = currLineNumber;
+        type = UNDEFINED;
+        while (!tryScanKeyword(input.substr(i), type, size, currLineNumber) || isMultiKeyWord(type))
         {
             i++;
         }
+
+        //Preservee the line number
+        currLineNumber = lineNum;
+
 
         size = i;
 
@@ -174,8 +200,9 @@ private:
 
     //Trys to scan a keyword and returns true if this was successful
     //(Essentially returns true if it is not an identifier because of the needed ispace at the bottom)
-    bool tryScanKeyword(const string& input, TokenType& type, int& size)
+    bool tryScanKeyword(const string& input, TokenType& type, int& size, int& lineNum)
     {
+        lineNum = currLineNumber;
         switch(input.at(0))
         {
             case ',':
@@ -219,23 +246,23 @@ private:
                 size = 1;
                 return true;
             case '\'':
-                scanString(input, type, size);
+                scanString(input, type, size, lineNum);
                 return true;
             case '#':
-                scanComment(input, type, size);
+                scanComment(input, type, size, lineNum);
                 return true;
             case 'S':
                 //keyword = SCHEMES;
-                return scanKeyword(input, SCHEMES, type, size);
+                return scanKeyword(input, SCHEMES, type, size, lineNum);
             case 'F':
                 //keyword = FACTS;
-                return scanKeyword(input, FACTS, type, size);                
+                return scanKeyword(input, FACTS, type, size, lineNum);                
             case 'R':
                 //keyword = RULES;
-                return scanKeyword(input, RULES, type, size);                
+                return scanKeyword(input, RULES, type, size, lineNum);                
             case 'Q':
                 //keyword = QUERIES;
-                return scanKeyword(input, QUERIES, type, size);                
+                return scanKeyword(input, QUERIES, type, size, lineNum);                
             default:
                 if (isspace(input.at(0)))
                 {
@@ -273,18 +300,19 @@ public:
             return Token(_EOF, "", currLineNumber);
         }
 
-        bool isIdent = !tryScanKeyword(input, type, size);
+        int lineNum;
+        bool isIdent = !tryScanKeyword(input, type, size, lineNum);
         
 
         if (isIdent)
         {
-            scanIdentifier(input, type, size);
+            scanIdentifier(input, type, size, lineNum);
         }
 
 
         string value = input.substr(0, size);
         input = input.substr(size);
 
-        return Token(type, value, currLineNumber);
+        return Token(type, value, lineNum);
     }
 };
