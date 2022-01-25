@@ -232,7 +232,7 @@ private:
                 }
                 else
                 {
-                    type = COLOR_DASH;
+                    type = COLON_DASH;
                     size = 2;                    
                 } 
                 return true;               

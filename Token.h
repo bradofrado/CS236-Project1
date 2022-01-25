@@ -11,7 +11,7 @@ enum TokenType {
     LEFT_PAREN,
     RIGHT_PAREN,
     COLON,
-    COLOR_DASH,
+    COLON_DASH,
     MULTIPLY,
     ADD,
     SCHEMES,
@@ -64,8 +64,8 @@ public:
                 return "RIGHT_PAREN";
             case COLON:
                 return "COLON";
-            case COLOR_DASH:
-                return "COLOR_DASH";
+            case COLON_DASH:
+                return "COLON_DASH";
             case MULTIPLY:
                 return "MULTIPLY";
             case ADD:
