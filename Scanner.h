@@ -184,9 +184,107 @@ private:
         size = i;
     }
 
-    void scanIdentifier(const string input, TokenType& type, int& size)
+    bool isDigit(char c)
     {
+
+    }
+
+    bool isLetter(char c)
+    {
+
+    }
+
+    void scanIdentifier(const string& input, TokenType& type, int& size)
+    {
+        if (!isLetter(input.at(0)))
+        {
+            type = UNDEFINED;
+            size = 1;
+            return;
+        }
         
+        bool isKeyword = false;
+        int i = size;
+        
+        while (!tryScanKeyword(input, type, size))
+        {
+            i++;
+        }
+
+        size = i;
+
+        type = ID;
+    }
+
+    bool tryScanKeyword(const string& input, TokenType& type, int& size)
+    {
+        switch(input.at(0))
+        {
+            case ',':
+                type = COMMA;
+                size = 1;
+                return true;
+            case '.':
+                type = PERIOD;
+                size = 1;
+                return true;
+            case '?':
+                type = Q_MARK;
+                size = 1;
+                return true;
+            case '(':
+                type = LEFT_PAREN;
+                size = 1;
+                return true;
+            case ')':
+                type = RIGHT_PAREN;
+                size = 1;
+                return true;
+            case ':':
+                if (input.at(1) != '-')
+                {
+                    type = COLON;
+                    size = 1;                    
+                }
+                else
+                {
+                    type = COLOR_DASH;
+                    size = 2;                    
+                } 
+                return true;               
+            case '*':
+                type = MULTIPLY;
+                size = 1;
+                return true;
+            case '+':
+                type = ADD;
+                size = 1;
+                return true;
+            case '\'':
+                scanString(input, type, size);
+                return true;
+            case '#':
+                scanComment(input, type, size);
+                return true;
+            case 'S':
+                //keyword = SCHEMES;
+                return scanKeyword(input, SCHEMES, type, size);
+            case 'F':
+                //keyword = FACTS;
+                return scanKeyword(input, FACTS, type, size);                
+            case 'R':
+                //keyword = RULES;
+                return scanKeyword(input, RULES, type, size);                
+            case 'Q':
+                //keyword = QUERIES;
+                return scanKeyword(input, QUERIES, type, size);                
+            default:
+                if (isspace(input.at(0)))
+                {
+                    return true;
+                }
+                return false;
+        }
     }
 
 public:
@@ -215,80 +313,12 @@ public:
             
         // }
 
-        bool isIdent = false;
-
-        switch(input.at(0))
-        {
-            case ',':
-                type = COMMA;
-                size = 1;
-                break;
-            case '.':
-                type = PERIOD;
-                size = 1;
-                break;
-            case '?':
-                type = Q_MARK;
-                size = 1;
-                break;
-            case '(':
-                type = LEFT_PAREN;
-                size = 1;
-                break;
-            case ')':
-                type = RIGHT_PAREN;
-                size = 1;
-                break;
-            case ':':
-                if (input.at(1) != '-')
-                {
-                    type = COLON;
-                    size = 1;
-                    break;
-                }
-                else
-                {
-                    type = COLOR_DASH;
-                    size = 2;
-                    break;
-                }                
-            case '*':
-                type = MULTIPLY;
-                size = 1;
-                break;
-            case '+':
-                type = ADD;
-                size = 1;
-                break;
-            case '\'':
-                scanString(input, type, size);
-                break;
-            case '#':
-                scanComment(input, type, size);
-                break;
-            case 'S':
-                //keyword = SCHEMES;
-                isIdent = scanKeyword(input, SCHEMES, type, size);
-                break;
-            case 'F':
-                //keyword = FACTS;
-                isIdent = scanKeyword(input, FACTS, type, size);
-                break;
-            case 'R':
-                //keyword = RULES;
-                isIdent = scanKeyword(input, RULES, type, size);
-                break;
-            case 'Q':
-                //keyword = QUERIES;
-                isIdent = scanKeyword(input, QUERIES, type, size);
-                break;
-            default:
-                isIdent = true;
-        }
+        bool isIdent = !tryScanKeyword(input, type, size);
+        
 
         if (isIdent)
         {
-            scanIdentifier(type, size);
+            scanIdentifier(input, type, size);
         }
 
 
