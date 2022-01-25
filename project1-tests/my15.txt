@@ -1,0 +1,8 @@
+(COMMENT,"# try all keywords
+",3)
+(SCHEMES,"Schemes",5)
+(FACTS,"Facts",6)
+(RULES,"Rules",7)
+(QUERIES,"Queries",8)
+(EOF,"",10)
+Total Tokens = 6

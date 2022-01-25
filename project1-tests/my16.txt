@@ -1,0 +1,11 @@
+(COMMA,",",1)
+(STRING,"'a string'",2)
+(COMMENT,"# a comment
+",3)
+(SCHEMES,"Schemes",4)
+(FACTS,"Facts",5)
+(RULES,"Rules",5)
+(COLON,":",6)
+(COLOR_DASH,":-",6)
+(EOF,"",6)
+Total Tokens = 9

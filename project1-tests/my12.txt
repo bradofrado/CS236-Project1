@@ -1,0 +1,7 @@
+(COMMENT,"# non-dash after colon
+",3)
+(COLOR_DASH,":-",5)
+(COLON,":",7)
+(COLON,":",7)
+(EOF,"",9)
+Total Tokens = 5
