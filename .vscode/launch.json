@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            "args": ["1"],
+            "args": ["project1-tests/in10.txt"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

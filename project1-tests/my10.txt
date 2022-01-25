@@ -23,5 +23,5 @@
 (ID,"X",6)
 (RIGHT_PAREN,")",6)
 (PERIOD,".",6)
-(EOF,"",7)
+(EOF,"",8)
 Total Tokens = 26

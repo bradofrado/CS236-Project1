@@ -33,7 +33,7 @@ private:
     {
         string keywordName = Token::typeName(keyword);
         char c;
-        for (int i = 0; i < keywordName.length(); i++)
+        for (unsigned int i = 0; i < keywordName.length(); i++)
         {
             c = input.at(i);
 
@@ -63,7 +63,7 @@ private:
 
         lineNum = currLineNumber;
 
-        int i = 1;
+        unsigned int i = 1;
         while (i != input.length() && input.at(i) != '\'')
         {
             i++;
@@ -97,7 +97,7 @@ private:
     {
         lineNum = currLineNumber;
 
-        int i = 0;
+        unsigned int i = 0;
         bool multiline = false;
         while (!multiline && i != input.length() && input.at(i) != '\n')
         {
@@ -167,7 +167,7 @@ private:
 
         int cI = (int)c;
 
-        return cI >= A && cI <= Z || cI >= a && cI <= z;
+        return (cI >= A && cI <= Z) || (cI >= a && cI <= z);
     }
 
     void scanIdentifier(const string& input, TokenType& type, int& size, int& lineNum)
@@ -179,8 +179,7 @@ private:
             return;
         }
 
-        bool isKeyword = false;
-        int i = size;
+        unsigned int i = size;
         
         lineNum = currLineNumber;
         type = UNDEFINED;

@@ -16,10 +16,10 @@ run:
 	for number in $(numbers) ; \
 	do \
 		echo "Running input $$number" ; \
-		./lab$(NUM) < $(tests)/in$$number.txt > $(tests)/my$$number.txt ; \
+		./lab$(NUM) $(tests)/in$$number.txt > $(tests)/my$$number.txt ; \
 		diff $(tests)/out$$number.txt $(tests)/my$$number.txt || (echo "diff failed on test $$number \n") ; \
 	done
 
 compile:
-	g++ -std=c++17 -g *.cpp -o lab$(NUM)
+	g++ -Wall -Werror -std=c++17 -g *.cpp -o lab$(NUM)
 

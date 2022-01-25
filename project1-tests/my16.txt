@@ -7,5 +7,5 @@
 (RULES,"Rules",5)
 (COLON,":",6)
 (COLOR_DASH,":-",6)
-(EOF,"",6)
+(EOF,"",7)
 Total Tokens = 9

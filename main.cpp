@@ -1,36 +1,22 @@
-#if DEBUG
 #include <fstream>
-#endif
-
 #include <iostream>
 #include <vector>
 #include "Token.h"
 #include "Scanner.h"
 using namespace std;
 
+string getInput(string fileName);
+
 int main(int argc, char* argv[]) 
 {
-    string input = "";
-    string curr;
-
-#if DEBUG
-ifstream in("test.txt");
-    while (getline(in, curr))
+    string fileName = "test.txt";
+    if (argc > 1)
     {
-        input += curr;
-        input += '\n';
+        fileName = argv[1];
     }
+    
+    string input = getInput(fileName);
 
-    input = input.substr(0, input.size() - 1);
-#else
-    while (getline(cin, curr))
-    {
-        input += curr;
-        input += '\n';
-    }
-
-    input = input.substr(0, input.size() - 1);
-#endif
     Scanner s(input);
 
     vector<Token> tokens;
@@ -46,4 +32,25 @@ ifstream in("test.txt");
     } while (t.getType() != _EOF);
 
     cout << "Total Tokens = " << tokens.size() << endl;
+}
+
+string getInput(string fileName)
+{
+    string input = "";
+    char curr;
+
+    ifstream in(fileName);
+
+    if (!in.is_open())
+    {
+        cout << "Bad file " << fileName << endl;
+        exit(0);
+    }
+
+    while (in.get(curr))
+    {
+        input += curr;
+    }
+
+    return input;
 }
