@@ -61,7 +61,7 @@ private:
         }
 
         int i = 1;
-        while (input.at(i) != '\'' && i != input.length())
+        while (i != input.length() && input.at(i) != '\'')
         {
             i++;
 
@@ -85,11 +85,11 @@ private:
         size = i;
     }
 
-    void scanComment(const string input, TokenType& type, int& size)
+    void scanComment(const string& input, TokenType& type, int& size)
     {
         int i = 0;
         bool multiline = false;
-        while (!multiline && input.at(i) != '\n' && i != input.length())
+        while (!multiline && i != input.length() && input.at(i) != '\n')
         {
             if (input.at(i) == '|')
             {
@@ -111,7 +111,10 @@ private:
         //If we hit the end of file and 
         if (i == input.length())
         {
-            type = UNDEFINED;
+            if (multiline)
+            {
+                type = UNDEFINED;
+            }            
         }
         else
         {
@@ -124,7 +127,15 @@ private:
 
     bool isMultiKeyWord(TokenType type)
     {
-        return Token::typeName(type).length() > 1 && type != COLOR_DASH;
+        switch (type)
+        {
+            case QUERIES: return true;
+            case SCHEMES: return true;
+            case FACTS: return true;
+            case RULES: return true;
+            default:
+                return false;
+        }
     }
 
     bool isLetter(char c)
@@ -247,7 +258,7 @@ public:
             return Token(_EOF, "", currLineNumber);
         }
 
-        while (isspace(input.at(0)))
+        while (input.length() > 0 && isspace(input.at(0)))
         {
             if (input.at(0) == '\n')
             {
@@ -255,6 +266,11 @@ public:
             }
 
             input = input.substr(1);
+        }
+
+        if (input.length() == 0)
+        {
+            return Token(_EOF, "", currLineNumber);
         }
 
         bool isIdent = !tryScanKeyword(input, type, size);
