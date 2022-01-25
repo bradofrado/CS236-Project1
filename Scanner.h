@@ -184,14 +184,16 @@ private:
         size = i;
     }
 
-    bool isDigit(char c)
-    {
-
-    }
-
     bool isLetter(char c)
     {
+        const int A = 65;
+        const int Z = 90;
+        const int a = 97;
+        const int z = 122;
 
+        int cI = (int)c;
+
+        return cI >= A && cI <= Z || cI >= a && cI <= z;
     }
 
     void scanIdentifier(const string& input, TokenType& type, int& size)
@@ -202,7 +204,7 @@ private:
             size = 1;
             return;
         }
-        
+
         bool isKeyword = false;
         int i = size;
         
