@@ -30,3 +30,6 @@ $(buckets):
 compile:
 	g++ -Wall -Werror -std=c++17 -g *.cpp -o lab$(NUM)
 
+git:
+	git config --global user.email "bradofrado@gmail.com"
+	git config --global user.name "Braydon Jones-Replit"

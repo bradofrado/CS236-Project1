@@ -38,7 +38,7 @@ private:
         {
             c = input.at(i);
 
-            if (!charIsEqual(c, keywordName.at(i)))
+            if (c != keywordName.at(i))
             {
                 size = i;
                 type = ID;
