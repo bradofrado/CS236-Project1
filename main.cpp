@@ -13,5 +13,5 @@ int main(int argc, char* argv[])
     {
         t = s.scanToken();
         cout << t.toString() << endl;
-    } while (t.getType() != EOF);
+    } while (t.getType() != _EOF);
 }

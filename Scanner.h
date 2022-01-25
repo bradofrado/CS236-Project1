@@ -10,7 +10,7 @@ class Scanner
 {
 private:
     string input;
-
+    
     //Compares if two chars are equal ignoring case
     bool charIsEqual(char c1, char c2)
     {
@@ -55,7 +55,12 @@ private:
 
     void scanString(const string input, TokenType& type, int& size)
     {
-        int i = 0;
+        if (input.at(0) != '\'')
+        {
+            throw std::invalid_argument("Only call scan string if this input starts with a string token");
+        }
+
+        int i = 1;
         while (input.at(i) != '\'' && i != input.length())
         {
             i++;
@@ -117,6 +122,11 @@ private:
         size = i;
     }
 
+    bool isMultiKeyWord(TokenType type)
+    {
+        return Token::typeName(type).length() > 1 && type != COLOR_DASH;
+    }
+
     bool isLetter(char c)
     {
         const int A = 65;
@@ -141,7 +151,7 @@ private:
         bool isKeyword = false;
         int i = size;
         
-        while (!tryScanKeyword(input, type, size))
+        while (!tryScanKeyword(input.substr(i), type, size) && !isMultiKeyWord(type))
         {
             i++;
         }
@@ -228,8 +238,14 @@ public:
     Scanner(const string& input): input(input) {}
     Token scanToken()
     {
+        
         TokenType type;
         int size = 0;
+
+        if (input.length() == 0)
+        {
+            return Token(_EOF, "", 1);
+        }
 
         while (isspace(input.at(0)))
         {
