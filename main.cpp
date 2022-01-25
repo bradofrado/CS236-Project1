@@ -3,12 +3,15 @@
 #include "Scanner.h"
 using namespace std;
 
-int main() 
+int main(int argc, char* argv[]) 
 {
-    Token t = Token(COMMA, ",", 2);
-    cout << t.toString() << endl;
+    Scanner s("Queries: marriedTo ('Bea', 'Zed')?");
 
-    Scanner s = Scanner(",,");
-    t = s.scanToken();
-    cout << t.toString() << endl;
+    Token t;
+
+    do
+    {
+        t = s.scanToken();
+        cout << t.toString() << endl;
+    } while (t.getType() != EOF);
 }

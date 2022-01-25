@@ -33,6 +33,7 @@ private:
     int line;
 public:
     Token(TokenType _type, string _value, int _line) : type(_type), value(_value), line(_line) {}
+    Token(){}
 
     string toString() const 
     {
@@ -40,6 +41,11 @@ public:
         out << "(" << typeName(type) << "," << "\"" << value << "\"" << "," << line << ")";
 
         return out.str();
+    }
+
+    TokenType getType()
+    {
+        return type;
     }
 
     static string typeName(TokenType type)
@@ -82,6 +88,8 @@ public:
                 return "UNDEFINED";
             case _EOF:
                 return "EOF";
+            default:
+                return "";
         }
     }
 };

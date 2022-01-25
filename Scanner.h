@@ -11,15 +11,33 @@ class Scanner
 private:
     string input;
 
+    //Compares if two chars are equal ignoring case
+    bool charIsEqual(char c1, char c2)
+    {
+        int cI1 = (int)c1;
+        int cI2 = (int)c2;
+
+        if (!isLetter(c1) && !isLetter(c2))
+        {
+            return cI1 == cI2;
+        }
+
+        //If they are letters, make them both upper case
+        cI1 = cI1 > 90 ? cI1 - 32 : cI1;
+        cI2 = cI2 > 90 ? cI2 - 32 : cI2;
+
+        return cI1 == cI2;
+    }
+
     bool scanKeyword(const string& input, TokenType keyword, TokenType& type, int& size)
     {
-        string keywordName = Token.typeName(keyword);
+        string keywordName = Token::typeName(keyword);
         char c;
         for (int i = 0; i < keywordName.length(); i++)
         {
             c = input.at(i);
 
-            if (c != keywordName.at(i))
+            if (!charIsEqual(c, keywordName.at(i)))
             {
                 size = i;
                 type = ID;
@@ -29,96 +47,11 @@ private:
 
         type = keyword;
         size = keywordName.length();
+
+        return true;
     }
 
-    void scanSingleCharacter(const string& input, TokenType& type, int& size)
-    {
-        switch(input.at(0))
-        {
-            case ',':
-                type = COMMA;
-                size = 1;
-                break;
-            case '.':
-                type = PERIOD;
-                size = 1;
-                break;
-            case '?':
-                type = Q_MARK;
-                size = 1;
-                break;
-            case '(':
-                type = LEFT_PAREN;
-                size = 1;
-                break;
-            case ')':
-                type = RIGHT_PAREN;
-                size = 1;
-                break;
-            case ':':
-                if (input.at(1) != '-')
-                {
-                    type = COLON;
-                    size = 1;
-                    break;
-                }
-                else
-                {
-                    type = COLOR_DASH;
-                    size = 2;
-                    break;
-                }                
-            case '*':
-                type = MULTIPLY;
-                size = 1;
-                break;
-            case '+':
-                type = ADD;
-                size = 1;
-                break;
-            case '\'':
-                scanString(type, size);
-                break;
-            case '#':
-                scanComment(type, size);
-                break;
-            case '':
-                type = UNDEFINED;
-                size = 0;
-                break;
-            case '':
-                type = _EOF;
-                size = 0;
-                break;
-            default:
-                size = -1;
-        }
-    }
-
-    void scanMultiCharacter(const string& input, TokenType& type, int& size)
-    {
-        TokenType keyword = UNDEFINED;
-        switch (input.at(0))
-        {
-            case 'S':
-                keyword = SCHEMES;
-                break;
-            case 'F':
-                keyword = FACTS;
-                break;
-            case 'R':
-                keyword = RULES;
-                break;
-            case 'Q':
-                keyword = QUERIES;
-                break;
-        }  
-
-        if (!scanKeyword(input, keyword, type, size))
-        {
-            keyword = UNDEFINED;
-        }
-    }
+    
 
     void scanString(const string input, TokenType& type, int& size)
     {
@@ -151,7 +84,7 @@ private:
     {
         int i = 0;
         bool multiline = false;
-        while (!multiline && input.at(i) != '\\n' && i != input.length())
+        while (!multiline && input.at(i) != '\n' && i != input.length())
         {
             if (input.at(i) == '|')
             {
@@ -218,6 +151,8 @@ private:
         type = ID;
     }
 
+    //Trys to scan a keyword and returns true if this was successful
+    //(Essentially returns true if it is not an identifier because of the needed ispace at the bottom)
     bool tryScanKeyword(const string& input, TokenType& type, int& size)
     {
         switch(input.at(0))
