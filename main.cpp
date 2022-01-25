@@ -5,7 +5,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) 
 {
-    Scanner s("Queries: marriedTo ('Bea', 'Zed')?");
+    Scanner s("Queries: \nmarriedTo ('Bea', 'Zed')?");
 
     Token t;
 

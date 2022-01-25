@@ -10,7 +10,7 @@ class Scanner
 {
 private:
     string input;
-    
+    int currLineNumber;
     //Compares if two chars are equal ignoring case
     bool charIsEqual(char c1, char c2)
     {
@@ -235,7 +235,7 @@ private:
     }
 
 public:
-    Scanner(const string& input): input(input) {}
+    Scanner(const string& input): input(input), currLineNumber(1) {}
     Token scanToken()
     {
         
@@ -244,27 +244,18 @@ public:
 
         if (input.length() == 0)
         {
-            return Token(_EOF, "", 1);
+            return Token(_EOF, "", currLineNumber);
         }
 
         while (isspace(input.at(0)))
         {
+            if (input.at(0) == '\n')
+            {
+                currLineNumber++;
+            }
+
             input = input.substr(1);
         }
-
-        // bool hasToken = false;
-        // string currScan = "";
-        // while (!hasToken)
-        // {
-        //     currScan += input.at(0);
-        // }
-
-        //scanSingleCharacter(input, type, size);
-
-        // if (size == -1)
-        // {
-            
-        // }
 
         bool isIdent = !tryScanKeyword(input, type, size);
         
@@ -278,6 +269,6 @@ public:
         string value = input.substr(0, size);
         input = input.substr(size);
 
-        return Token(type, value, 1);
+        return Token(type, value, currLineNumber);
     }
 };
