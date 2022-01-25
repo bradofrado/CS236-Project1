@@ -280,7 +280,8 @@ private:
             default:
                 if (isspace(input.at(0)))
                 {
-                    return input.at(0) != '\n';
+                    type = UNDEFINED;
+                    return true;
                 }
                 return false;
         }
