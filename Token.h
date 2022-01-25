@@ -42,7 +42,7 @@ public:
         return out.str();
     }
 
-    string typeName(TokenType type) const
+    static string typeName(TokenType type)
     {
         switch(type)
         {
