@@ -48,6 +48,51 @@ public:
         return type;
     }
 
+    static string typeKeyword(TokenType type)
+    {
+        switch(type)
+        {
+            case COMMA:
+                return "Comma";
+            case PERIOD:
+                return ".";
+            case Q_MARK:
+                return "?";
+            case LEFT_PAREN:
+                return "(";
+            case RIGHT_PAREN:
+                return ")";
+            case COLON:
+                return ":";
+            case COLON_DASH:
+                return ":-";
+            case MULTIPLY:
+                return "*";
+            case ADD:
+                return "+";
+            case SCHEMES:
+                return "Schemes";
+            case FACTS:
+                return "Facts";
+            case RULES:
+                return "Rules";
+            case QUERIES:
+                return "Queries";
+            case ID:
+                return "ID";
+            case STRING:
+                return "\'";
+            case COMMENT:
+                return "#";
+            case UNDEFINED:
+                return "UNDEFINED";
+            case _EOF:
+                return "EOF";
+            default:
+                return "";
+        }
+    }
+
     static string typeName(TokenType type)
     {
         switch(type)

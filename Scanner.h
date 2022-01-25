@@ -11,6 +11,7 @@ class Scanner
 private:
     string input;
     int currLineNumber;
+
     //Compares if two chars are equal ignoring case
     bool charIsEqual(char c1, char c2)
     {
@@ -31,7 +32,7 @@ private:
 
     bool scanKeyword(const string& input, TokenType keyword, TokenType& type, int& size, int& lineNum)
     {
-        string keywordName = Token::typeName(keyword);
+        string keywordName = Token::typeKeyword(keyword);
         char c;
         for (unsigned int i = 0; i < keywordName.length(); i++)
         {
@@ -149,10 +150,10 @@ private:
         }
         else
         {
-						if (input.at(i) == '\n')
-						{
-							currLineNumber--;
-						}
+			if (input.at(i) == '\n')
+			{
+				currLineNumber--;
+			}			
             
             type = COMMENT;
         }
