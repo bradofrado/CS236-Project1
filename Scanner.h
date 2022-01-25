@@ -280,7 +280,7 @@ private:
             default:
                 if (isspace(input.at(0)))
                 {
-                    return true;
+                    return input.at(0) != '\n';
                 }
                 return false;
         }
