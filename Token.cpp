@@ -8,7 +8,7 @@ string Token::toString() const
     return out.str();
 }
 
-TokenType Token::getType()
+TokenType Token::getType() const
 {
     return type;
 }

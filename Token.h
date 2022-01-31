@@ -37,7 +37,7 @@ public:
 
     string toString() const;
 
-    TokenType getType();
+    TokenType getType() const;
 
     static string typeKeyword(TokenType type);
 

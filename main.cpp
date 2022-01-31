@@ -3,9 +3,12 @@
 #include <vector>
 #include "Token.h"
 #include "Scanner.h"
+#include "Parser.h"
+
 using namespace std;
 
 string getInput(string fileName);
+vector<Token> scanTokens(string input, bool doCout = false);
 
 int main(int argc, char* argv[]) 
 {
@@ -17,6 +20,14 @@ int main(int argc, char* argv[])
     
     string input = getInput(fileName);
 
+    vector<Token> tokens = scanTokens(input);
+
+    Parser p = Parser(tokens);
+    p.scheme();
+}
+
+vector<Token> scanTokens(string input, bool doCout)
+{
     Scanner s(input);
 
     vector<Token> tokens;
@@ -28,10 +39,15 @@ int main(int argc, char* argv[])
         t = s.scanToken();
 
         tokens.push_back(t);
-        cout << t.toString() << endl;
+
+        if (doCout)
+            cout << t.toString() << endl;
     } while (t.getType() != _EOF);
 
-    cout << "Total Tokens = " << tokens.size() << endl;
+    if (doCout)
+        cout << "Total Tokens = " << tokens.size() << endl;
+
+    return tokens;
 }
 
 string getInput(string fileName)
