@@ -2,13 +2,14 @@
 
 #include <vector>
 #include "Token.h"
+#include "DatalogProgram.h"
 
 class Parser 
 {
 private:
+    DatalogProgram datalogObject;
     vector<Token> tokens;
-public: 
-    Parser(const vector<Token>& tokens);
+
     TokenType tokenType() const;
     void advanceToken();
     void throwError();
@@ -36,4 +37,8 @@ public:
     void idList();
     
     void parameter();
+
+public:
+    Parser(const vector<Token>& tokens);
+    DatalogProgram parse();
 };

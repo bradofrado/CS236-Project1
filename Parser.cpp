@@ -7,6 +7,13 @@ using namespace std;
 
 Parser::Parser(const vector<Token>& _tokens) : tokens(_tokens) {}
 
+DatalogProgram Parser::parse() 
+{
+    datalogProgram();
+
+    return datalogObject;
+}
+
 TokenType Parser::tokenType() const
 {
     return tokens.at(0).getType();
