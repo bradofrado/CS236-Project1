@@ -41,9 +41,16 @@ string DatalogProgram::toString()
     }
 
     ss << "Domain(" << domain.size() << "):" << endl;
+    set<string>::iterator end = domain.end();
+    end--;
     for (set<string>::iterator i = domain.begin(); i != domain.end(); i++)
     {
-        ss << "  " << *i << endl;
+        ss << "  " << *i;
+
+        if (i != end)
+        {
+            ss << endl;            
+        }
     }
 
     return ss.str();
