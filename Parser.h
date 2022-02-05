@@ -7,6 +7,8 @@
 class Parser 
 {
 private:
+    bool isDebug;
+
     Token errorToken;
     DatalogProgram datalogObject;
     vector<Token> tokens;
@@ -40,7 +42,7 @@ private:
     Parameter* parameter();
 
 public:
-    Parser(const vector<Token>& tokens);
+    Parser(const vector<Token>& tokens, bool isDebug = false);
     bool parse();
 
     DatalogProgram getDatalogProgram();

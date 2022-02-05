@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Parser::Parser(const vector<Token>& _tokens) : tokens(_tokens) 
+Parser::Parser(const vector<Token>& _tokens, bool _isDebug) : tokens(_tokens), isDebug(_isDebug)
 {
 
 }
@@ -52,7 +52,8 @@ void Parser::throwError()
 
 Token Parser::match(TokenType t)
 {
-    cout << "matching: " << tokens.at(0).toString() << " with " << Token::typeName(t) << endl;
+    if (isDebug)
+        cout << "matching: " << tokens.at(0).toString() << " with " << Token::typeName(t) << endl;
 
     if (tokenType() == t)
     {
