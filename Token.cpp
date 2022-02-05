@@ -13,6 +13,11 @@ TokenType Token::getType() const
     return type;
 }
 
+string Token::getValue() const
+{
+    return value;
+}
+
 string Token::typeKeyword(TokenType type)
 {
     switch (type)

@@ -13,7 +13,7 @@ private:
     TokenType tokenType() const;
     void advanceToken();
     void throwError();
-    void match(TokenType t);
+    Token match(TokenType t);
 
     //Grammar rules
     void datalogProgram();
@@ -28,17 +28,20 @@ private:
     void rule();
     void query();
 
-    void headPredicate();
-    void predicate();
+    Predicate* headPredicate();
+    Predicate* predicate();
 
-    void predicateList();
-    void parameterList();
-    void stringList();
-    void idList();
+    vector<Predicate*> predicateList();
+    vector<Parameter*> parameterList();
+    vector<Parameter*> stringList();
+    vector<Parameter*> idList();
     
-    void parameter();
+    Parameter* parameter();
 
 public:
     Parser(const vector<Token>& tokens);
-    DatalogProgram parse();
+    bool parse();
+
+    DatalogProgram getDatalogProgram();
+    Token getErrorToken();
 };

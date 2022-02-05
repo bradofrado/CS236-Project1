@@ -23,7 +23,18 @@ int main(int argc, char* argv[])
     vector<Token> tokens = scanTokens(input);
 
     Parser p = Parser(tokens);
-    p.datalogProgram();
+    bool compiled = p.parse();
+
+    if (compiled)
+    {
+        cout << "Success!" << endl;
+        cout << p.getDatalogProgram().toString() << endl;
+    }
+    else 
+    {
+        cout << "Failure!" << endl;
+        cout << "\t" << p.getErrorToken().toString() << endl;
+    }
 }
 
 

@@ -39,6 +39,8 @@ public:
 
     TokenType getType() const;
 
+    string getValue() const;
+
     static string typeKeyword(TokenType type);
 
     static string typeName(TokenType type);
