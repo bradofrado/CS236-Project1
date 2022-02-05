@@ -42,7 +42,10 @@ TokenType Parser::tokenType() const
 
 void Parser::advanceToken()
 {
-    tokens.erase(tokens.begin());
+    do 
+    {
+        tokens.erase(tokens.begin());
+    } while(tokens.begin()->getType() == COMMENT);
 }
 
 void Parser::throwError()

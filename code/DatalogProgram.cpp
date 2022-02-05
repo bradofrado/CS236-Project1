@@ -19,31 +19,31 @@ string DatalogProgram::toString()
     ss << "Schemes(" << schemes.size() << "):" << endl;
     for (unsigned int i = 0; i < schemes.size(); i++)
     {
-        ss << "\t" << schemes.at(i)->toString() << endl;
+        ss << "  " << schemes.at(i)->toString() << endl;
     }
 
     ss << "Facts(" << facts.size() << "):" << endl;
     for (unsigned int i = 0; i < facts.size(); i++)
     {
-        ss << "\t" << facts.at(i)->toString() << "." << endl;
+        ss << "  " << facts.at(i)->toString() << "." << endl;
     }
 
     ss << "Rules(" << rules.size() << "):" << endl;
     for (unsigned int i = 0; i < rules.size(); i++)
     {
-        ss << "\t" << rules.at(i)->toString() << "." << endl;
+        ss << "  " << rules.at(i)->toString() << "." << endl;
     }
 
     ss << "Queries(" << queries.size() << "):" << endl;
     for (unsigned int i = 0; i < queries.size(); i++)
     {
-        ss << "\t" << queries.at(i)->toString() << "?" << endl;
+        ss << "  " << queries.at(i)->toString() << "?" << endl;
     }
 
     ss << "Domain(" << domain.size() << "):" << endl;
     for (set<string>::iterator i = domain.begin(); i != domain.end(); i++)
     {
-        ss << "\t" << *i << endl;
+        ss << "  " << *i << endl;
     }
 
     return ss.str();

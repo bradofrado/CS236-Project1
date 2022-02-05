@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
     else 
     {
         cout << "Failure!" << endl;
-        cout << "\t" << p.getErrorToken().toString() << endl;
+        cout << "  " << p.getErrorToken().toString() << endl;
     }
 }
 
