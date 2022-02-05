@@ -15,6 +15,25 @@ public:
     void match(TokenType t);
 
     //Grammar rules
-    void idList();
+    void datalogProgram();
+
+    void schemeList();
+    void factList();
+    void ruleList();
+    void queryList();
+
     void scheme();
+    void fact();
+    void rule();
+    void query();
+
+    void headPredicate();
+    void predicate();
+
+    void predicateList();
+    void parameterList();
+    void stringList();
+    void idList();
+    
+    void parameter();
 };

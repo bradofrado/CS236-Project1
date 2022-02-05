@@ -23,8 +23,10 @@ int main(int argc, char* argv[])
     vector<Token> tokens = scanTokens(input);
 
     Parser p = Parser(tokens);
-    p.scheme();
+    p.datalogProgram();
 }
+
+
 
 vector<Token> scanTokens(string input, bool doCout)
 {
