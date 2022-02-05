@@ -40,22 +40,11 @@ string DatalogProgram::toString()
         ss << "  " << queries.at(i)->toString() << "?" << endl;
     }
 
-    ss << "Domain(" << domain.size() << "):" << endl;
+    ss << "Domain(" << domain.size() << "):";
 
-    if (domain.size() > 0)
+    for (set<string>::iterator i = domain.begin(); i != domain.end(); i++)
     {
-        //This is to make sure we don't have an extra endl at the end of the domain lists
-        set<string>::iterator end = domain.end();
-        end--;
-        for (set<string>::iterator i = domain.begin(); i != domain.end(); i++)
-        {
-            ss << "  " << *i;
-
-            if (i != end)
-            {
-                ss << endl;            
-            }
-        }
+        ss << endl << "  " << *i;
     }
 
     return ss.str();
