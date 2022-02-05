@@ -66,6 +66,9 @@ Token Parser::match(TokenType t)
     {
         throwError();
     }
+
+    //This is just to satisfy the warnings and won't get called
+    return tokens.at(0);
 }
 
 void Parser::datalogProgram()
@@ -252,6 +255,8 @@ Predicate* Parser::headPredicate()
     {
         throwError();
     }
+
+    return NULL;
 }
 Predicate* Parser::predicate()
 {
@@ -281,6 +286,8 @@ Predicate* Parser::predicate()
     {
         throwError();
     }
+
+    return NULL;
 }
 
 vector<Predicate*> Parser::predicateList()
@@ -383,4 +390,6 @@ Parameter* Parser::parameter()
     {
         throwError();
     }
+
+    return NULL;
 }

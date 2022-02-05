@@ -7,11 +7,12 @@
 class Parser 
 {
 private:
+    vector<Token> tokens;   
     bool isDebug;
 
     Token errorToken;
     DatalogProgram datalogObject;
-    vector<Token> tokens;
+    
 
     TokenType tokenType() const;
     void advanceToken();
