@@ -12,7 +12,15 @@ Parser::Parser(const vector<Token>& _tokens) : tokens(_tokens)
 
 bool Parser::parse() 
 {
-    datalogProgram();
+    try
+    {
+        datalogProgram();
+    }
+    catch(Token e)
+    {
+        errorToken = e;
+        return false;
+    }
 
     return true;
 }
@@ -24,7 +32,7 @@ DatalogProgram Parser::getDatalogProgram()
 
 Token Parser::getErrorToken()
 {
-    
+    return errorToken;
 }
 
 TokenType Parser::tokenType() const
@@ -39,8 +47,7 @@ void Parser::advanceToken()
 
 void Parser::throwError()
 {
-    Token token = tokens.at(0);
-    cout << "error: " << token.toString() << endl;
+    throw tokens.at(0);
 }
 
 Token Parser::match(TokenType t)

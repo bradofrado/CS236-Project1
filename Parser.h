@@ -7,6 +7,7 @@
 class Parser 
 {
 private:
+    Token errorToken;
     DatalogProgram datalogObject;
     vector<Token> tokens;
 
