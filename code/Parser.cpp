@@ -12,6 +12,12 @@ Parser::Parser(const vector<Token>& _tokens, bool _isDebug) : tokens(_tokens), i
 
 bool Parser::parse() 
 {
+    //Loop until we don't have a comment
+    while(tokens.begin()->getType() == COMMENT)
+    {
+        tokens.erase(tokens.begin());
+    } 
+
     try
     {
         datalogProgram();
