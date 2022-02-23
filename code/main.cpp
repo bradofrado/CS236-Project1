@@ -4,11 +4,14 @@
 #include "Token.h"
 #include "Scanner.h"
 #include "Parser.h"
+#include "DatalogProgram.h"
 
 using namespace std;
 
 string getInput(string fileName);
 vector<Token> scanTokens(string input, bool doCout = false);
+DatalogProgram parseTokens(vector<Token>);
+DatalogProgram parseProgram(string fileName);
 
 int main(int argc, char* argv[]) 
 {
@@ -18,26 +21,18 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
     
+    DatalogProgram program = parseProgram(fileName);
+}
+
+DatalogProgram parseProgram(string fileName)
+{
     string input = getInput(fileName);
 
     vector<Token> tokens = scanTokens(input);
+    DatalogProgram program = parseTokens(tokens);
 
-    Parser p = Parser(tokens);
-    bool compiled = p.parse();
-
-    if (compiled)
-    {
-        cout << "Success!" << endl;
-        cout << p.getDatalogProgram().toString() << endl;
-    }
-    else 
-    {
-        cout << "Failure!" << endl;
-        cout << "  " << p.getErrorToken().toString() << endl;
-    }
+    return program;
 }
-
-
 
 vector<Token> scanTokens(string input, bool doCout)
 {
@@ -82,4 +77,19 @@ string getInput(string fileName)
     }
 
     return input;
+}
+
+DatalogProgram parseTokens(vector<Token> tokens) 
+{
+    Parser p = Parser(tokens);
+    bool compiled = p.parse();
+
+    if (!compiled) 
+    {
+        cout << "Failure!" << endl;
+        cout << "  " << p.getErrorToken().toString() << endl;
+        exit(0);
+    }
+
+    return p.getDatalogProgram();
 }
