@@ -5,13 +5,16 @@
 #include "Scanner.h"
 #include "Parser.h"
 #include "DatalogProgram.h"
+#include "Scheme.h"
+#include "Tuple.h"
+#include "Relation.h"
 
 using namespace std;
 
 string getInput(string fileName);
 vector<Token> scanTokens(string input, bool doCout = false);
 DatalogProgram parseTokens(vector<Token>);
-DatalogProgram parseProgram(string fileName);
+DatalogProgram parseProgram(string fileName, bool doCout = false);
 
 int main(int argc, char* argv[]) 
 {
@@ -21,15 +24,45 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
     
-    DatalogProgram program = parseProgram(fileName);
+    vector<string> names = { "ID", "Name", "Major" };
+
+    Scheme scheme(names);
+
+    Relation relation("student", scheme);
+
+    vector<string> values[] = {
+        {"'42'", "'Ann'", "'CS'"},
+        {"'32'", "'Bob'", "'CS'"},
+        {"'64'", "'Ned'", "'EE'"},
+        {"'16'", "'Jim'", "'EE'"},
+    };
+
+    for (auto& value : values) {
+        Tuple tuple(value);
+        cout << tuple.toString(scheme) << endl;
+        relation.addTuple(tuple);
+    }
+
+    cout << "relation:" << endl;
+    cout << relation.toString();
+
+    Relation result = relation.select(2, "'CS'");
+
+    cout << "select Major='CS' result:" << endl;
+    cout << result.toString();
 }
 
-DatalogProgram parseProgram(string fileName)
+DatalogProgram parseProgram(string fileName, bool doCout)
 {
     string input = getInput(fileName);
 
-    vector<Token> tokens = scanTokens(input);
+    vector<Token> tokens = scanTokens(input, doCout);
     DatalogProgram program = parseTokens(tokens);
+
+    if (doCout) 
+    {
+        cout << program.toString() << endl;
+    }
 
     return program;
 }
