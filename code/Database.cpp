@@ -4,29 +4,25 @@
 #include "DatalogProgram.h"
 #include <string>
 #include <sstream>
+#include <iterator>
+#include <map>
+
+using namespace std;
 
 Database::Database(DatalogProgram DatalogProgram) 
 {
-    //Make the schemes
-    // for (auto& dpScheme : DatalogProgram.getSchemes())
-    // {
-    //     string name = dpScheme->getName();
-
-    //     Scheme scheme(dpScheme->getParamNames());
-    //     Relation relation(name, scheme);
-
-    //     for (auto& value : DatalogProgram.getFacts()) {
-    //         if (value->getName() == name) {
-    //             Tuple tuple(value->getParamNames());
-    //             relation.addTuple(tuple);
-    //         }
-    //     }
-
-    //     relations.push_back(relation);
-    // }
-
     evaluateSchemes(DatalogProgram.getSchemes());
     evaluateFacts(DatalogProgram.getFacts());
+}
+
+Database::~Database() 
+{
+    for (map<string,Relation*>::iterator it = relations.begin(); it != relations.end(); it++) 
+    {
+        Relation* relation = it->second;
+
+        delete relation;
+    }
 }
 
 void Database::evaluateSchemes(vector<Predicate*> schemes) 
@@ -37,41 +33,42 @@ void Database::evaluateSchemes(vector<Predicate*> schemes)
         string name = dpScheme->getName();
 
         Scheme scheme(dpScheme->getParamNames());
-        Relation relation(name, scheme);
+        Relation* relation = new Relation(name, scheme);
 
-        relations.push_back(relation);
+        relations.insert(pair<string, Relation*>(name,relation));
     }
 }
 
 void Database::evaluateFacts(vector<Predicate*> facts)
 {
     for (auto& value : facts) {
-        Relation* relation = findRelation(value->getName());
+        string name = value->getName();
+        Relation* relation = relations[name];
         Tuple tuple(value->getParamNames());
         relation->addTuple(tuple);
     }
 }
 
-Relation* Database::findRelation(string schemeName) 
-{
-    for (auto& relation : relations) 
-    {
-        if (relation.getName() == schemeName)
-        {
-            return &relation;
-        }
-    }
+// Relation* Database::findRelation(string schemeName) 
+// {
+//     for (auto& relation : relations) 
+//     {
+//         if (relation.getName() == schemeName)
+//         {
+//             return &relation;
+//         }
+//     }
 
-    throw "Cannot find the relation with the name " + schemeName;
-}
+//     throw "Cannot find the relation with the name " + schemeName;
+// }
 
 string Database::toString()
 {
     stringstream ss;
 
-    for (auto& relation : relations) 
+    for (map<string,Relation*>::iterator it = relations.begin(); it != relations.end(); it++) 
     {
-        ss << relation.toString() << endl;
+        ss << it->second->toString() << endl;
     }
 
     return ss.str();

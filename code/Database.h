@@ -1,6 +1,7 @@
 #pragma once
 
-#include <vector>
+#include <map>
+#include <string>
 #include "Relation.h"
 #include "DatalogProgram.h"
 #include "Predicate.h"
@@ -8,14 +9,14 @@
 class Database 
 {
 private:
-    vector<Relation> relations;
+    map<string, Relation*> relations;
 
     void evaluateSchemes(vector<Predicate*> schemes);
     void evaluateFacts(vector<Predicate*> facts);
-    Relation* findRelation(string schemeName);
+    //Relation* findRelation(string schemeName);
 public:
     Database(DatalogProgram DatalogProgram);
-    ~Database(){}
+    ~Database();
 
     string toString();
 };
