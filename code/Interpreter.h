@@ -13,6 +13,7 @@ private:
 
     void evaluateSchemes();
     void evaluateFacts();
+    void evaluateRules();
     void evaluateQueries();
 public:
     Interpreter(DatalogProgram datalogProgram);

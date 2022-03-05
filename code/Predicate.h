@@ -14,8 +14,11 @@ private:
 public:
     Predicate(string _name) : name(_name) {}
     string toString();
+
     void addParam(Parameter* param);
     void addParams(vector<Parameter*> params);
+
+    vector<Parameter> getParams() const;
     vector<string> getParamNames() const;
     string getName() const;
 };

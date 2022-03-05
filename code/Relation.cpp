@@ -28,8 +28,38 @@ string Relation::toString() const {
 Relation Relation::select(int index, const string& value) const {
     Relation result(name, scheme);
     for (auto& tuple : tuples)
-        if (tuple.at(index) == value)
-    result.addTuple(tuple);
+        if (tuple.at(index) == value) {
+            result.addTuple(tuple);
+        }
+    return result;
+}
+
+Relation Relation::select(vector<int> positions) const
+{
+    if (positions.size() == 0)
+    {
+        throw "No positions";
+    }
+
+    Relation result(name, scheme);
+    for (auto& tuple : tuples) {
+        int first = positions[0];
+        bool isEqual = true;
+        for (unsigned int i = 1; i < positions.size(); i++)
+        {
+            if (tuple.at(i) != tuple.at(first))
+            {
+                isEqual = false;
+                break;
+            }
+        }
+
+        if (isEqual)
+        {
+            result.addTuple(tuple);
+        }
+    }
+
     return result;
 }
 

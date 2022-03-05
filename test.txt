@@ -1,19 +1,15 @@
 Schemes:
-    snap(S,N,A,P) 
-    NameHasID(N,S)
- #| 
- multi line comment
-
-
- aldkfj
- asdlfkj
- |#
+  SK(A,B)
 Facts:
-    snap('12345','C. Brown','12 Apple','555-1234'). #this is a comment
-    snap('67890','L. Van Pelt','34 Pear','555-5678').
- 
-Rules: #more comments yes
-    NameHasID(N,S) :- snap(S,N,A,P).
- 
+  SK('a','c').
+  SK('b','c').
+  SK('b','b').
+  SK('b','c').
+Rules:
+
 Queries:
-    NameHasID('Snoopy',Id)?
+  SK(X,'c')?
+  SK('b','c')?
+  SK(X,X)?
+  SK(X,Y)?
+  SK('c','c')?

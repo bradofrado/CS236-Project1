@@ -26,6 +26,7 @@ class Relation {
   string toString() const;
 
   Relation select(int index, const string& value) const;
-
+  Relation select(vector<int> positions) const;
+  
   string getName() const;
 };

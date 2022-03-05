@@ -40,6 +40,18 @@ void Predicate::addParams(vector<Parameter*> params)
     }
 }
 
+vector<Parameter> Predicate::getParams() const
+{
+    vector<Parameter> params;
+
+    for (auto& param : parameters)
+    {
+        params.push_back(*param);
+    }
+
+    return params;
+}
+
 vector<string> Predicate::getParamNames() const
 {
     vector<string> names;
