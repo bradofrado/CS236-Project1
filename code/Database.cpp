@@ -2,6 +2,7 @@
 #include "Relation.h"
 #include "Scheme.h"
 #include "DatalogProgram.h"
+#include "Predicate.h"
 #include <string>
 #include <sstream>
 #include <iterator>
@@ -9,10 +10,10 @@
 
 using namespace std;
 
-Database::Database(DatalogProgram DatalogProgram) 
+Database::Database(vector<Predicate*> schemes, vector<Predicate*> facts) 
 {
-    evaluateSchemes(DatalogProgram.getSchemes());
-    evaluateFacts(DatalogProgram.getFacts());
+    evaluateSchemes(schemes);
+    evaluateFacts(facts);
 }
 
 Database::~Database() 

@@ -25,36 +25,10 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
 
-    Database database(parseProgram(fileName));
+    DatalogProgram datalogProgram = parseProgram(fileName);
+    Database database(datalogProgram.getSchemes(), datalogProgram.getFacts());
 
     cout << database.toString() << endl;
-    
-    // vector<string> names = { "ID", "Name", "Major" };
-
-    // Scheme scheme(names);
-
-    // Relation relation("student", scheme);
-
-    // vector<string> values[] = {
-    //     {"'42'", "'Ann'", "'CS'"},
-    //     {"'32'", "'Bob'", "'CS'"},
-    //     {"'64'", "'Ned'", "'EE'"},
-    //     {"'16'", "'Jim'", "'EE'"},
-    // };
-
-    // for (auto& value : values) {
-    //     Tuple tuple(value);
-    //     cout << tuple.toString(scheme) << endl;
-    //     relation.addTuple(tuple);
-    // }
-
-    // cout << "relation:" << endl;
-    // cout << relation.toString();
-
-    // Relation result = relation.select(2, "'CS'");
-
-    // cout << "select Major='CS' result:" << endl;
-    // cout << result.toString();
 }
 
 DatalogProgram parseProgram(string fileName, bool doCout)

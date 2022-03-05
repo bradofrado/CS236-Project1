@@ -15,7 +15,7 @@ private:
     void evaluateFacts(vector<Predicate*> facts);
     //Relation* findRelation(string schemeName);
 public:
-    Database(DatalogProgram DatalogProgram);
+    Database(vector<Predicate*> schemes, vector<Predicate*> facts);
     ~Database();
 
     string toString();
