@@ -6,17 +6,17 @@
 #include "DatalogProgram.h"
 #include "Predicate.h"
 
-class Database 
+class Database : public map<string, Relation>
 {
 private:
-    map<string, Relation*> relations;
+    //map<string, Relation*> relations;
 
-    void evaluateSchemes(vector<Predicate*> schemes);
-    void evaluateFacts(vector<Predicate*> facts);
-    //Relation* findRelation(string schemeName);
 public:
-    Database(vector<Predicate*> schemes, vector<Predicate*> facts);
-    ~Database();
+    Database(map<string, Relation> relations) : map(relations){}
+    Database() {}
+    ~Database(){}
+
+    Relation& getRelation(string name);
 
     string toString();
 };

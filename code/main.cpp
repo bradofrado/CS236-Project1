@@ -9,6 +9,7 @@
 #include "Tuple.h"
 #include "Relation.h"
 #include "Database.h"
+#include "Interpreter.h"
 
 using namespace std;
 
@@ -26,9 +27,10 @@ int main(int argc, char* argv[])
     }
 
     DatalogProgram datalogProgram = parseProgram(fileName);
-    Database database(datalogProgram.getSchemes(), datalogProgram.getFacts());
+    
+    Interpreter interpreter(datalogProgram);
 
-    cout << database.toString() << endl;
+    interpreter.run();
 }
 
 DatalogProgram parseProgram(string fileName, bool doCout)
