@@ -7,6 +7,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 //"-DDEBUG",
+                "-std=c++17",
                 "-g",
                 "*.cpp",
                 "-o",

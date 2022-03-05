@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 
@@ -37,4 +38,20 @@ void Predicate::addParams(vector<Parameter*> params)
     {
         parameters.push_back(params.at(i));
     }
+}
+
+vector<string> Predicate::getParamNames() const
+{
+    vector<string> names;
+    for (auto& param : parameters)
+    {
+        names.push_back(param->value);
+    }
+
+    return names;
+}
+
+string Predicate::getName() const
+{
+    return name;
 }

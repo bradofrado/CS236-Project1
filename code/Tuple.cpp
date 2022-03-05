@@ -9,11 +9,12 @@ string Tuple::toString(const Scheme& scheme) const
 {
     stringstream out;
     for (unsigned i = 0; i < size(); i++) {
-      if (i > 0)
-	out << ", ";
-      const string& name = scheme.at(i);
-      const string& value = at(i);
-      out << name << "=" << value;
+    //   if (i > 0)
+	// out << ", ";
+    //   const string& name = scheme.at(i);
+    //   const string& value = at(i);
+    //   out << name << "=" << value;
+        out << at(i) << " ";
     }
     return out.str();
 }

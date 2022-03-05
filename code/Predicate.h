@@ -16,4 +16,6 @@ public:
     string toString();
     void addParam(Parameter* param);
     void addParams(vector<Parameter*> params);
+    vector<string> getParamNames() const;
+    string getName() const;
 };

@@ -27,4 +27,5 @@ class Relation {
 
   Relation select(int index, const string& value) const;
 
+  string getName() const;
 };
