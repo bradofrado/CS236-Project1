@@ -11,4 +11,6 @@ public:
     Query(vector<Parameter> params) : vector(params) {}
     vector<int> getConstants();
     map<string, vector<int>> getVariables();
+
+    int getParameterNamePosition(string name);
 };

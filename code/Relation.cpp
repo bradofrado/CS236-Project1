@@ -2,11 +2,22 @@
 #include <sstream>
 #include <string>
 #include <set>
+#include <map>
+
 #include "Scheme.h"
 #include "Tuple.h"
 #include "Relation.h"
 
 using namespace std;
+
+
+Relation::Relation(const Relation& relation) : name(relation.name), scheme(relation.scheme)
+{
+    for (auto& tuple : relation.tuples) 
+    {
+        addTuple(tuple);
+    }   
+}
 
 void Relation::addTuple(const Tuple& tuple) {
     if (tuple.size() != scheme.size()) {
@@ -18,10 +29,8 @@ void Relation::addTuple(const Tuple& tuple) {
 
 string Relation::toString() const {
     stringstream out;
-    out << scheme.toString() << endl;
-
     for (auto& tuple : tuples)
-        out << tuple.toString(scheme) << endl;
+        out << "  " << tuple.toString(scheme) << endl;
     return out.str();
 }
 
@@ -66,4 +75,57 @@ Relation Relation::select(vector<int> positions) const
 string Relation::getName() const
 {
     return name;
+}
+
+Relation Relation::project(vector<int> columns) const
+{
+    vector<string> schemeNames;
+    Scheme newScheme(schemeNames);
+    Relation result(name, newScheme);
+
+    //Make the new scheme with the projected columns
+    for (auto& index : columns)
+    {
+        if (index >= (int)scheme.size())
+        {
+            throw "All the indexes must map to a column in this scheme";
+        }
+
+        result.scheme.push_back(scheme.at(index));
+    }
+
+    //Loop through the tuples and with the new columns
+    for (auto& tuple : tuples)
+    {
+        vector<string> values;
+        Tuple newTuple(values);
+        for (auto& index : columns)
+        {
+            newTuple.push_back(tuple.at(index));
+        }
+
+        result.addTuple(newTuple);
+    }
+
+    return result;
+}
+
+Relation Relation::rename(map<int,string>columnAndNames) const
+{
+    if (columnAndNames.size() != scheme.size())
+    {
+        throw "The rename map must have the same size as this scheme";
+    }
+
+    Relation result(*this);
+
+    for (auto& columnName : columnAndNames)
+    {
+        int column = columnName.first;
+        string name = columnName.second;
+
+        result.scheme.at(column) = name;
+    }
+
+    return result;
 }

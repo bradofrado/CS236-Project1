@@ -53,21 +53,41 @@ void Interpreter::evaluateQueries()
 
         Query query(dbQuery->getParams());
         Relation result = relation;
-        vector<int> constants = query.getConstants();
-        map<string, vector<int>> variables = query.getVariables();
 
+        //Select all the constant values
+        vector<int> constants = query.getConstants();
         for (auto& index : constants)
         {
             result = result.select(index, query.at(index).value);
         }
 
+        //Select all the variable values
+        map<string, vector<int>> variables = query.getVariables();
         for (map<string, vector<int>>::iterator it = variables.begin(); it != variables.end(); it++)
         {
             result = result.select(it->second);
         }
 
-        cout << dbQuery->toString() << endl;
-        cout << result.toString() << endl;
+        //Project the result
+        vector<int> projections;
+        for (auto& variable : variables)
+        {
+            int position = query.getParameterNamePosition(variable.first);
+            projections.push_back(position);
+        }
+        result = result.project(projections);
+
+        //Rename the result
+        map<int, string> newNames;
+        for (auto& variable : projections)
+        {
+            newNames[variable] = query.at(variable).value;
+        }
+        result = result.rename(newNames);
+
+        //Display the results of the query
+        cout << dbQuery->toString() << "? " << "Yes(1)" << endl;
+        cout << result.toString();
     }
 }
 
