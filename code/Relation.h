@@ -35,4 +35,5 @@ class Relation {
   Relation rename(map<int,string>columnAndNames) const;
 
   string getName() const;
+  int size() const;
 };

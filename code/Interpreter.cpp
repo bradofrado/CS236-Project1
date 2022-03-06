@@ -68,6 +68,8 @@ void Interpreter::evaluateQueries()
             result = result.select(it->second);
         }
 
+        int numResults = result.size();
+
         //Project the result
         vector<int> projections;
         for (auto& variable : variables)
@@ -85,8 +87,11 @@ void Interpreter::evaluateQueries()
         }
         result = result.rename(newNames);
 
+        //Get the result string
+        string resultString = numResults > 0 ? "Yes(" + to_string(numResults) + ")" : "No";
+
         //Display the results of the query
-        cout << dbQuery->toString() << "? " << "Yes(1)" << endl;
+        cout << dbQuery->toString() << "? " << resultString << endl;
         cout << result.toString();
     }
 }

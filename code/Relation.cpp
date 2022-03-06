@@ -34,6 +34,16 @@ string Relation::toString() const {
     return out.str();
 }
 
+string Relation::getName() const
+{
+    return name;
+}
+
+int Relation::size() const
+{
+    return tuples.size();
+}
+
 Relation Relation::select(int index, const string& value) const {
     Relation result(name, scheme);
     for (auto& tuple : tuples)
@@ -72,16 +82,17 @@ Relation Relation::select(vector<int> positions) const
     return result;
 }
 
-string Relation::getName() const
-{
-    return name;
-}
-
 Relation Relation::project(vector<int> columns) const
 {
     vector<string> schemeNames;
     Scheme newScheme(schemeNames);
     Relation result(name, newScheme);
+
+    //If there is nothing to project, return an empty relation
+    if (columns.size() == 0)
+    {
+        return result;
+    }
 
     //Make the new scheme with the projected columns
     for (auto& index : columns)
