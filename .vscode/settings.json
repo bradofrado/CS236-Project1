@@ -3,6 +3,7 @@
         "set": "cpp",
         "vector": "cpp",
         "iosfwd": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "xtree": "cpp"
     }
 }

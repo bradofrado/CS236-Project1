@@ -13,6 +13,14 @@ Interpreter::Interpreter(DatalogProgram datalogProgram)
     this->datalogProgram = datalogProgram;
 }
 
+void Interpreter::run() 
+{
+    evaluateSchemes();
+    evaluateFacts();
+    evaluateRules();
+    evaluateQueries();
+}
+
 void Interpreter::evaluateSchemes() 
 {
     map<string, Relation> relations;
@@ -53,7 +61,10 @@ void Interpreter::evaluateQueries()
 
         Query query(dbQuery->getParams());
         Relation result = relation;
-
+        
+        vector<int> projections;
+        map<int, string> newNames;
+        
         //Select all the constant values
         vector<int> constants = query.getConstants();
         for (auto& index : constants)
@@ -63,28 +74,25 @@ void Interpreter::evaluateQueries()
 
         //Select all the variable values
         map<string, vector<int>> variables = query.getVariables();
-        for (map<string, vector<int>>::iterator it = variables.begin(); it != variables.end(); it++)
+        for (auto& variable : variables)
         {
-            result = result.select(it->second);
+            result = result.select(variable.second);
+
+            //Optimized: get the projection indexes
+            int position = query.getParameterNamePosition(variable.first);
+            projections.push_back(position);
+
+            //Optimized: get the rename mapping
+            newNames[position] = variable.first;
         }
 
+        //Get the result size
         int numResults = result.size();
 
         //Project the result
-        vector<int> projections;
-        for (auto& variable : variables)
-        {
-            int position = query.getParameterNamePosition(variable.first);
-            projections.push_back(position);
-        }
         result = result.project(projections);
 
         //Rename the result
-        map<int, string> newNames;
-        for (auto& variable : projections)
-        {
-            newNames[variable] = query.at(variable).value;
-        }
         result = result.rename(newNames);
 
         //Get the result string
@@ -94,14 +102,4 @@ void Interpreter::evaluateQueries()
         cout << dbQuery->toString() << "? " << resultString << endl;
         cout << result.toString();
     }
-}
-
-void Interpreter::run() 
-{
-    evaluateSchemes();
-    evaluateFacts();
-    evaluateRules();
-    evaluateQueries();
-
-    //cout << database.toString() << endl;
 }
