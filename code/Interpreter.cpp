@@ -87,8 +87,8 @@ void Interpreter::evaluateQueries()
             //If it needs to be sorted, find where to put it
             if (currIt > 0 && position < projections.at(currIt - 1)) 
             {
-                int index = currIt - 1;
-                while (index > 0 && position < projections.at(index))
+                int index = currIt;
+                while (index > 0 && position < projections.at(index - 1))
                 {
                     index--;
                 }
