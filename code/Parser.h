@@ -32,15 +32,15 @@ private:
     void rule();
     void query();
 
-    Predicate* headPredicate();
-    Predicate* predicate();
+    Predicate headPredicate();
+    Predicate predicate();
 
-    vector<Predicate*> predicateList();
-    vector<Parameter*> parameterList();
-    vector<Parameter*> stringList();
-    vector<Parameter*> idList();
+    vector<Predicate> predicateList();
+    vector<Parameter> parameterList();
+    vector<Parameter> stringList();
+    vector<Parameter> idList();
     
-    Parameter* parameter();
+    Parameter parameter();
 
 public:
     Parser(const vector<Token>& tokens, bool isDebug = false);

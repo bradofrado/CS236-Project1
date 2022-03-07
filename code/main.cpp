@@ -28,9 +28,10 @@ int main(int argc, char* argv[])
 
     DatalogProgram datalogProgram = parseProgram(fileName);
     
-    Interpreter interpreter(datalogProgram);
+    cout << datalogProgram.toString() << endl;
+    //Interpreter interpreter(datalogProgram);
 
-    interpreter.run();
+    //interpreter.run();
 }
 
 DatalogProgram parseProgram(string fileName, bool doCout)

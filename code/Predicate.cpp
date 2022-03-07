@@ -14,7 +14,7 @@ string Predicate::toString()
     ss << name << "(";
     for (unsigned int i = 0; i < parameters.size(); i++)
     {
-        ss << parameters.at(i)->toString();
+        ss << parameters.at(i).toString();
 
         if (i < parameters.size() - 1)
         {
@@ -27,12 +27,12 @@ string Predicate::toString()
     return ss.str();
 }
 
-void Predicate::addParam(Parameter* param)
+void Predicate::addParam(Parameter& param)
 {
     parameters.push_back(param);
 }
 
-void Predicate::addParams(vector<Parameter*> params)
+void Predicate::addParams(vector<Parameter> params)
 {
     for (unsigned int i = 0; i < params.size(); i++)
     {
@@ -46,7 +46,7 @@ vector<Parameter> Predicate::getParams() const
 
     for (auto& param : parameters)
     {
-        params.push_back(*param);
+        params.push_back(param);
     }
 
     return params;
@@ -57,7 +57,7 @@ vector<string> Predicate::getParamNames() const
     vector<string> names;
     for (auto& param : parameters)
     {
-        names.push_back(param->value);
+        names.push_back(param.value);
     }
 
     return names;
