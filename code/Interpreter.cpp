@@ -74,16 +74,40 @@ void Interpreter::evaluateQueries()
 
         //Select all the variable values
         map<string, vector<int>> variables = query.getVariables();
+
+        int currIt = 0;
         for (auto& variable : variables)
         {
             result = result.select(variable.second);
 
             //Optimized: get the projection indexes
             int position = query.getParameterNamePosition(variable.first);
-            projections.push_back(position);
 
-            //Optimized: get the rename mapping
-            newNames.push_back(variable.first);
+            //The positions need to be sorted for this to work
+            //If it needs to be sorted, find where to put it
+            if (currIt > 0 && position < projections.at(currIt - 1)) 
+            {
+                int index = currIt - 1;
+                while (index > 0 && position < projections.at(index))
+                {
+                    index--;
+                }
+                projections.insert(projections.begin() + index, position);
+
+                //Optimized: get the rename mapping
+                newNames.insert(newNames.begin() + index, variable.first);
+            }
+            //Otherwise stick it on the end
+            else
+            {
+                projections.push_back(position);
+
+                //Optimized: get the rename mapping
+                newNames.push_back(variable.first);
+            }
+            
+
+            currIt++;
         }
 
         //Get the result size

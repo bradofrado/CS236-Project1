@@ -4,6 +4,7 @@
         "vector": "cpp",
         "iosfwd": "cpp",
         "map": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "unordered_map": "cpp"
     }
 }
