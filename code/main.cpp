@@ -16,7 +16,7 @@ using namespace std;
 string getInput(string fileName);
 vector<Token> scanTokens(string input, bool doCout = false);
 DatalogProgram parseTokens(vector<Token>);
-DatalogProgram parseProgram(string fileName, bool doCout = false);
+DatalogProgram parseProgram(string fileName, bool p1Cout = false, bool p2Cout = false);
 
 int main(int argc, char* argv[]) 
 {
@@ -26,21 +26,21 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
 
-    DatalogProgram datalogProgram = parseProgram(fileName, true);
+    DatalogProgram datalogProgram = parseProgram(fileName, false, true);
     
     //Interpreter interpreter(datalogProgram);
 
     //interpreter.run();
 }
 
-DatalogProgram parseProgram(string fileName, bool doCout)
+DatalogProgram parseProgram(string fileName, bool p1Cout, bool p2Cout)
 {
     string input = getInput(fileName);
 
-    vector<Token> tokens = scanTokens(input, doCout);
+    vector<Token> tokens = scanTokens(input, p1Cout);
     DatalogProgram program = parseTokens(tokens);
 
-    if (doCout) 
+    if (p2Cout) 
     {
         cout << "Success!" << endl;
         cout << program.toString() << endl;
