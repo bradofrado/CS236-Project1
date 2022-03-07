@@ -63,7 +63,7 @@ void Interpreter::evaluateQueries()
         Relation result = relation;
         
         vector<int> projections;
-        map<int, string> newNames;
+        vector<string> newNames;
         
         //Select all the constant values
         vector<int> constants = query.getConstants();
@@ -83,7 +83,7 @@ void Interpreter::evaluateQueries()
             projections.push_back(position);
 
             //Optimized: get the rename mapping
-            newNames[position] = variable.first;
+            newNames.push_back(variable.first);
         }
 
         //Get the result size

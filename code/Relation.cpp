@@ -121,21 +121,19 @@ Relation Relation::project(vector<int> columns) const
     return result;
 }
 
-Relation Relation::rename(map<int,string>columnAndNames) const
+Relation Relation::rename(vector<string> newNames) const
 {
-    if (columnAndNames.size() != scheme.size())
+    if (newNames.size() != scheme.size())
     {
         throw "The rename map must have the same size as this scheme";
     }
 
     Relation result(*this);
 
-    for (auto& columnName : columnAndNames)
+    for (unsigned int i = 0; i < newNames.size(); i++)
     {
-        int column = columnName.first;
-        string name = columnName.second;
-
-        result.scheme.at(column) = name;
+        string name = newNames.at(i);
+        result.scheme.at(i) = name;
     }
 
     return result;

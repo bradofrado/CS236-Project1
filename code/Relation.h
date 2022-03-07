@@ -32,7 +32,7 @@ class Relation {
   Relation select(vector<int> positions) const;
 
   Relation project(vector<int> columns) const;
-  Relation rename(map<int,string>columnAndNames) const;
+  Relation rename(vector<string> newNames) const;
 
   string getName() const;
   int size() const;
