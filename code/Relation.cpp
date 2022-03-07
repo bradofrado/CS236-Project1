@@ -66,7 +66,8 @@ Relation Relation::select(vector<int> positions) const
         bool isEqual = true;
         for (unsigned int i = 1; i < positions.size(); i++)
         {
-            if (tuple.at(i) != tuple.at(first))
+            int curr = positions[i];
+            if (tuple.at(curr) != tuple.at(first))
             {
                 isEqual = false;
                 break;

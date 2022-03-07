@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            "args": ["../project3-passoff/60/input62.txt"],
+            "args": ["../project3-passoff/80/input81.txt"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
