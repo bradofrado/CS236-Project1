@@ -26,11 +26,11 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
 
-    DatalogProgram datalogProgram = parseProgram(fileName, false, true);
+    DatalogProgram datalogProgram = parseProgram(fileName);
     
-    //Interpreter interpreter(datalogProgram);
+    Interpreter interpreter(datalogProgram);
 
-    //interpreter.run();
+    interpreter.run();
 }
 
 DatalogProgram parseProgram(string fileName, bool p1Cout, bool p2Cout)
