@@ -26,9 +26,8 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
 
-    DatalogProgram datalogProgram = parseProgram(fileName);
+    DatalogProgram datalogProgram = parseProgram(fileName, true);
     
-    cout << datalogProgram.toString() << endl;
     //Interpreter interpreter(datalogProgram);
 
     //interpreter.run();
@@ -43,6 +42,7 @@ DatalogProgram parseProgram(string fileName, bool doCout)
 
     if (doCout) 
     {
+        cout << "Success!" << endl;
         cout << program.toString() << endl;
     }
 
