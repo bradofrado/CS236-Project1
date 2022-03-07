@@ -27,9 +27,9 @@ void Interpreter::evaluateSchemes()
     //Make the schemes
     for (auto& dpScheme : datalogProgram.getSchemes())
     {
-        string name = dpScheme->getName();
+        string name = dpScheme.getName();
 
-        Scheme scheme(dpScheme->getParamNames());
+        Scheme scheme(dpScheme.getParamNames());
         Relation relation(name, scheme);
 
         relations.insert(pair<string, Relation>(name,relation));
@@ -41,9 +41,9 @@ void Interpreter::evaluateSchemes()
 void Interpreter::evaluateFacts()
 {
     for (auto& fact : datalogProgram.getFacts()) {
-        string name = fact->getName();
+        string name = fact.getName();
         Relation& relation = database.getRelation(name);
-        Tuple tuple(fact->getParamNames());
+        Tuple tuple(fact.getParamNames());
         relation.addTuple(tuple);
     }
 }
@@ -57,9 +57,9 @@ void Interpreter::evaluateQueries()
 {
     for (auto& dbQuery : datalogProgram.getQueries())
     {
-        Relation& relation = database.getRelation(dbQuery->getName());
+        Relation& relation = database.getRelation(dbQuery.getName());
 
-        Query query(dbQuery->getParams());
+        Query query(dbQuery.getParams());
         Relation result = relation;
         
         vector<int> projections;
@@ -123,7 +123,7 @@ void Interpreter::evaluateQueries()
         string resultString = numResults > 0 ? "Yes(" + to_string(numResults) + ")" : "No";
 
         //Display the results of the query
-        cout << dbQuery->toString() << "? " << resultString << endl;
+        cout << dbQuery.toString() << "? " << resultString << endl;
         cout << result.toString();
     }
 }

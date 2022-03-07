@@ -19,25 +19,25 @@ string DatalogProgram::toString()
     ss << "Schemes(" << schemes.size() << "):" << endl;
     for (unsigned int i = 0; i < schemes.size(); i++)
     {
-        ss << "  " << schemes.at(i)->toString() << endl;
+        ss << "  " << schemes.at(i).toString() << endl;
     }
 
     ss << "Facts(" << facts.size() << "):" << endl;
     for (unsigned int i = 0; i < facts.size(); i++)
     {
-        ss << "  " << facts.at(i)->toString() << "." << endl;
+        ss << "  " << facts.at(i).toString() << "." << endl;
     }
 
     ss << "Rules(" << rules.size() << "):" << endl;
     for (unsigned int i = 0; i < rules.size(); i++)
     {
-        ss << "  " << rules.at(i)->toString() << "." << endl;
+        ss << "  " << rules.at(i).toString() << "." << endl;
     }
 
     ss << "Queries(" << queries.size() << "):" << endl;
     for (unsigned int i = 0; i < queries.size(); i++)
     {
-        ss << "  " << queries.at(i)->toString() << "?" << endl;
+        ss << "  " << queries.at(i).toString() << "?" << endl;
     }
 
     ss << "Domain(" << domain.size() << "):";
@@ -55,56 +55,56 @@ set<string> DatalogProgram::getDomain() const
     return domain;
 }
 
-vector<Predicate*> DatalogProgram::getSchemes() const
+vector<Predicate> DatalogProgram::getSchemes() const
 {
     return schemes;
 }
 
-vector<Predicate*> DatalogProgram::getFacts() const
+vector<Predicate> DatalogProgram::getFacts() const
 {
     return facts;
 }
 
-vector<Rule*> DatalogProgram::getRules() const
+vector<Rule> DatalogProgram::getRules() const
 {
     return rules;
 }   
 
-vector<Predicate*> DatalogProgram::getQueries() const
+vector<Predicate> DatalogProgram::getQueries() const
 {
     return queries;
 }
 
 
-void DatalogProgram::addDomain(Parameter* _domain)
+void DatalogProgram::addDomain(Parameter& _domain)
 {
-    domain.insert(_domain->value);
+    domain.insert(_domain.value);
 }
 
-void DatalogProgram::addDomains(vector<Parameter*> _domains)
+void DatalogProgram::addDomains(vector<Parameter> _domains)
 {
     for (unsigned int i = 0; i < _domains.size(); i++)
     {
-        domain.insert(_domains.at(i)->value);
+        domain.insert(_domains.at(i).value);
     }
 }
 
-void DatalogProgram::addScheme(Predicate* scheme)
+void DatalogProgram::addScheme(Predicate& scheme)
 {
     schemes.push_back(scheme);
 }
 
-void DatalogProgram::addFact(Predicate* fact)
+void DatalogProgram::addFact(Predicate& fact)
 {
     facts.push_back(fact);
 }
 
-void DatalogProgram::addQuerie(Predicate* query)
+void DatalogProgram::addQuerie(Predicate& query)
 {
     queries.push_back(query);
 }
 
-void DatalogProgram::addRule(Rule* rule)
+void DatalogProgram::addRule(Rule& rule)
 {
     rules.push_back(rule);
 }

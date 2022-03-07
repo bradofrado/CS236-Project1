@@ -160,16 +160,17 @@ void Parser::scheme()
     if (tokenType() == ID)
     {
         Token schemeId = match(ID);
-        Predicate* scheme = new Predicate(schemeId.getValue());
-        datalogObject.addScheme(scheme);
+        Predicate scheme(schemeId.getValue());
         
         match(LEFT_PAREN);
         Token paramId = match(ID);
-        Parameter* param = new Parameter(paramId.getValue(), true);
-        scheme->addParam(param);
+        Parameter param(paramId.getValue(), true);
+        scheme.addParam(param);
 
-        vector<Parameter*> params = idList();
-        scheme->addParams(params);
+        vector<Parameter> params = idList();
+        scheme.addParams(params);
+        
+        datalogObject.addScheme(scheme);
 
         match(RIGHT_PAREN);
     }
@@ -183,15 +184,15 @@ void Parser::fact()
     if (tokenType() == ID)
     {
         Token factId = match(ID);
-        Predicate* fact = new Predicate(factId.getValue());
+        Predicate fact(factId.getValue());
         
         match(LEFT_PAREN);
         Token paramId = match(STRING);
-        Parameter* param = new Parameter(paramId.getValue(), false);
-        fact->addParam(param);
+        Parameter param(paramId.getValue(), false);
+        fact.addParam(param);
 
-        vector<Parameter*> params = stringList();
-        fact->addParams(params);
+        vector<Parameter> params = stringList();
+        fact.addParams(params);
 
         datalogObject.addDomain(param);
         datalogObject.addDomains(params);
@@ -209,15 +210,15 @@ void Parser::rule()
 {
     if (tokenType() == ID)
     {
-        Predicate* head = headPredicate();
+        Predicate head = headPredicate();
         match(COLON_DASH);
-        Predicate* first = predicate();
-        vector<Predicate*> rest = predicateList();
+        Predicate first = predicate();
+        vector<Predicate> rest = predicateList();
         match(PERIOD);
 
-        Rule* rule = new Rule(head);
-        rule->addPredicate(first);
-        rule->addPredicates(rest);
+        Rule rule(head);
+        rule.addPredicate(first);
+        rule.addPredicates(rest);
 
         datalogObject.addRule(rule);
     }
@@ -230,7 +231,7 @@ void Parser::query()
 {
     if (tokenType() == ID)
     {
-        Predicate* query = predicate();
+        Predicate query = predicate();
         match(Q_MARK);
 
         datalogObject.addQuerie(query);
@@ -241,20 +242,20 @@ void Parser::query()
     }
 }
 
-Predicate* Parser::headPredicate()
+Predicate Parser::headPredicate()
 {
     if (tokenType() == ID)
     {
         Token predicateId = match(ID);
-        Predicate* predicate = new Predicate(predicateId.getValue());
+        Predicate predicate(predicateId.getValue());
         
         match(LEFT_PAREN);
         Token paramId = match(ID);
-        Parameter* param = new Parameter(paramId.getValue(), true);
-        predicate->addParam(param);
+        Parameter param(paramId.getValue(), true);
+        predicate.addParam(param);
 
-        vector<Parameter*> params = idList();
-        predicate->addParams(params);
+        vector<Parameter> params = idList();
+        predicate.addParams(params);
 
         match(RIGHT_PAREN);
 
@@ -265,27 +266,22 @@ Predicate* Parser::headPredicate()
         throwError();
     }
 
-    return NULL;
+    Predicate null("null");
+    return null;
 }
-Predicate* Parser::predicate()
+Predicate Parser::predicate()
 {
     if (tokenType() == ID)
     {
-        // match(ID);
-        // match(LEFT_PAREN);
-        // parameter();
-        // parameterList();
-        // match(RIGHT_PAREN);
-
         Token predicateId = match(ID);
-        Predicate* predicate = new Predicate(predicateId.getValue());
+        Predicate predicate(predicateId.getValue());
         
         match(LEFT_PAREN);
-        Parameter* param = parameter();
-        predicate->addParam(param);
+        Parameter param = parameter();
+        predicate.addParam(param);
 
-        vector<Parameter*> params = parameterList();
-        predicate->addParams(params);
+        vector<Parameter> params = parameterList();
+        predicate.addParams(params);
 
         match(RIGHT_PAREN);
 
@@ -296,16 +292,17 @@ Predicate* Parser::predicate()
         throwError();
     }
 
-    return NULL;
+    Predicate null("null");
+    return null;
 }
 
-vector<Predicate*> Parser::predicateList()
+vector<Predicate> Parser::predicateList()
 {
     if (tokenType() == COMMA)
     {
         match(COMMA);
-        Predicate* first = predicate();
-        vector<Predicate*> rest = predicateList(); 
+        Predicate first = predicate();
+        vector<Predicate> rest = predicateList(); 
 
         rest.insert(rest.begin(), first);
 
@@ -314,41 +311,37 @@ vector<Predicate*> Parser::predicateList()
     else
     {
         //lambda
-        vector<Predicate*> preds;
+        vector<Predicate> preds;
         return preds;
     }
 }
-vector<Parameter*> Parser::parameterList()
+vector<Parameter> Parser::parameterList()
 {
     if (tokenType() == COMMA)
     {
-        // match(COMMA);
-        // parameter();
-        // parameterList();
-
         match(COMMA);
         
-        Parameter* param = parameter();
-        vector<Parameter*> params = parameterList();
+        Parameter param = parameter();
+        vector<Parameter> params = parameterList();
         params.insert(params.begin(), param);
 
         return params;
     }
     else
     {
-        vector<Parameter*> params;
+        vector<Parameter> params;
         return params;
     }
 }
-vector<Parameter*> Parser::stringList()
+vector<Parameter> Parser::stringList()
 {
     if (tokenType() == COMMA)
     {
         match(COMMA);
         Token paramId = match(STRING);
-        Parameter* param = new Parameter(paramId.getValue(), false);
+        Parameter param(paramId.getValue(), false);
 
-        vector<Parameter*> params = stringList();
+        vector<Parameter> params = stringList();
         params.insert(params.begin(), param);
 
         return params;
@@ -356,19 +349,19 @@ vector<Parameter*> Parser::stringList()
     else
     {
         //lambda
-        vector<Parameter*> params;
+        vector<Parameter> params;
         return params;
     }   
 }
-vector<Parameter*> Parser::idList()
+vector<Parameter> Parser::idList()
 {
     if (tokenType() == COMMA)
     {
         match(COMMA);
         Token paramId = match(ID);
-        Parameter* param = new Parameter(paramId.getValue(), true);
+        Parameter param(paramId.getValue(), true);
 
-        vector<Parameter*> params = idList();
+        vector<Parameter> params = idList();
         params.insert(params.begin(), param);
 
         return params;
@@ -376,23 +369,23 @@ vector<Parameter*> Parser::idList()
     else
     {
         //lambda
-        vector<Parameter*> params;
+        vector<Parameter> params;
         return params;
     }
 }
     
-Parameter* Parser::parameter()
+Parameter Parser::parameter()
 {
     if (tokenType() == STRING)
     {
         Token paramId = match(STRING);
-        Parameter* param = new Parameter(paramId.getValue(), false);
+        Parameter param(paramId.getValue(), false);
         return param;
     }
     else if (tokenType() == ID)
     {
         Token paramId = match(ID);
-        Parameter* param = new Parameter(paramId.getValue(), true);
+        Parameter param(paramId.getValue(), true);
         return param;
     }
     else
@@ -400,5 +393,6 @@ Parameter* Parser::parameter()
         throwError();
     }
 
-    return NULL;
+    Parameter null("null", true);
+    return null;
 }

@@ -1,4 +1,3 @@
-
 # makefile for project 3 pass-off tests
 
 NUM:=3
@@ -28,4 +27,3 @@ $(buckets):
 
 compile:
 	g++ -Wall -Werror -std=c++17 -g code/*.cpp -o lab$(NUM)
-
