@@ -27,3 +27,6 @@ $(buckets):
 
 compile:
 	g++ -Wall -Werror -std=c++17 -g code/*.cpp -o lab$(NUM)
+
+run: 
+	./lab$(NUM).exe test.txt

@@ -5,6 +5,7 @@
         "iosfwd": "cpp",
         "map": "cpp",
         "xtree": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "xstring": "cpp"
     }
 }

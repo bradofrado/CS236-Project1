@@ -139,3 +139,36 @@ Relation Relation::rename(vector<string> newNames) const
 
     return result;
 }
+
+// Relation Relation::join(const Relation& r)
+// {
+//     const Scheme& leftScheme = scheme;
+//     for (const Tuple& leftTuple : tuples) {
+//         cout << "left tuple: " << leftTuple.toString(leftScheme) << endl;
+//     }
+// }
+
+bool Relation::joinable (const Scheme& leftScheme, const Scheme& rightScheme,
+		       const Tuple& leftTuple, const Tuple& rightTuple)
+{
+    for (unsigned leftIndex = 0; leftIndex < leftScheme.size(); leftIndex++) {
+        const string& leftName = leftScheme.at(leftIndex);
+        const string& leftValue = leftTuple.at(leftIndex);
+        cout << "left name: " << leftName << " value: " << leftValue << endl;
+
+        for (unsigned rightIndex = 0; rightIndex < rightScheme.size(); rightIndex++) {
+            const string& rightName = rightScheme.at(rightIndex);
+            const string& rightValue = rightTuple.at(rightIndex);
+            cout << "right name: " << rightName << " value: " << rightValue << endl;
+
+            if (rightName == leftName && rightValue != leftValue)
+            {
+                return false;
+            }
+        }
+    }
+
+    
+
+    return true;
+}

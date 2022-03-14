@@ -26,11 +26,25 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
 
-    DatalogProgram datalogProgram = parseProgram(fileName);
+    // DatalogProgram datalogProgram = parseProgram(fileName);
     
-    Interpreter interpreter(datalogProgram);
+    // Interpreter interpreter(datalogProgram);
 
-    interpreter.run();
+    // interpreter.run();
+
+    Scheme scheme1( { "A", "B" } );
+    Scheme scheme2( { "B", "C" } );
+    Scheme scheme3( { "X", "Y" } );
+    Scheme scheme4( { "X", "Y", "Z" } );
+    Tuple tuple1( {"'1'", "'2'"} );
+    Tuple tuple2( {"'3'", "'4'"} );
+    Tuple tuple3( {"'1'", "'4'"} );
+    Tuple tuple4( {"'1'", "'2'", "'4'"} );
+
+    cout << Relation::joinable(scheme1, scheme2, tuple1, tuple2) << endl;
+    cout << Relation::joinable(scheme2, scheme3, tuple1, tuple2) << endl;
+    cout << Relation::joinable(scheme3, scheme4, tuple1, tuple4) << endl;
+    cout << Relation::joinable(scheme3, scheme4, tuple3, tuple4) << endl;
 }
 
 DatalogProgram parseProgram(string fileName, bool p1Cout, bool p2Cout)

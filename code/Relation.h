@@ -28,11 +28,16 @@ class Relation {
 
   string toString() const;
 
+  static bool joinable (const Scheme& leftScheme, const Scheme& rightScheme,
+		       const Tuple& leftTuple, const Tuple& rightTuple);
+
   Relation select(int index, const string& value) const;
   Relation select(vector<int> positions) const;
 
   Relation project(vector<int> columns) const;
   Relation rename(vector<string> newNames) const;
+
+  //Relation join(const Relation& r);
 
   string getName() const;
   int size() const;
