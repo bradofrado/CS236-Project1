@@ -37,7 +37,7 @@ class Relation {
   Relation project(vector<int> columns) const;
   Relation rename(vector<string> newNames) const;
 
-  //Relation join(const Relation& r);
+  Relation join(const Relation& r);
 
   string getName() const;
   int size() const;

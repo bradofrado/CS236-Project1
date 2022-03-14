@@ -140,13 +140,21 @@ Relation Relation::rename(vector<string> newNames) const
     return result;
 }
 
-// Relation Relation::join(const Relation& r)
-// {
-//     const Scheme& leftScheme = scheme;
-//     for (const Tuple& leftTuple : tuples) {
-//         cout << "left tuple: " << leftTuple.toString(leftScheme) << endl;
-//     }
-// }
+Relation Relation::join(const Relation& r)
+{
+    const Scheme& leftScheme = scheme;
+    const Scheme& rightScheme = r.scheme;
+
+    for (const Tuple& leftTuple : tuples) {
+        cout << "left tuple: " << leftTuple.toString(leftScheme) << endl;
+
+        for (const Tuple& rightTuple : r.tuples) {
+            cout << "right tuple: " << rightTuple.toString(rightScheme) << endl;
+        }
+    }
+
+    return Relation(name, scheme);
+}
 
 bool Relation::joinable (const Scheme& leftScheme, const Scheme& rightScheme,
 		       const Tuple& leftTuple, const Tuple& rightTuple)
