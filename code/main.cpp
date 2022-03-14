@@ -26,12 +26,17 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
 
-    // DatalogProgram datalogProgram = parseProgram(fileName);
+    DatalogProgram datalogProgram = parseProgram(fileName);
     
-    // Interpreter interpreter(datalogProgram);
+    Interpreter interpreter(datalogProgram);
 
-    // interpreter.run();
+    interpreter.run();
 
+    //test();
+}
+
+void test()
+{
     Relation studentRelation("students", Scheme( {"ID", "Name", "Major"} ));
 
     vector<string> studentValues[] = {

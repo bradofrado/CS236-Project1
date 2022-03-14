@@ -15,6 +15,9 @@ private:
     void evaluateFacts();
     void evaluateRules();
     void evaluateQueries();
+
+    Relation evaluatePredicate(Predicate predicate, int& numResults);
+    Relation evaluatePredicate(Predicate predicate);
 public:
     Interpreter(DatalogProgram datalogProgram);
 

@@ -39,6 +39,16 @@ string Relation::getName() const
     return name;
 }
 
+vector<string> Relation::getSchemeNames() const
+{
+    return scheme;
+}
+
+void Relation::setName(string name)
+{
+    this->name = name;
+}
+
 int Relation::size() const
 {
     return tuples.size();
@@ -81,6 +91,34 @@ Relation Relation::select(vector<int> positions) const
     }
 
     return result;
+}
+
+Relation Relation::project(vector<string> columns) const
+{
+    vector<int> columnIndexes;
+    // for (unsigned int i = 0; i < scheme.size(); i++) 
+    // {
+    //     for (string column : columns)
+    //     {
+    //         if (scheme.at(i) == column)
+    //         {
+    //             columnIndexes.push_back(i);
+    //         }
+    //     }
+    // }
+
+    for (string column : columns) 
+    {
+        for (unsigned int i = 0; i < scheme.size(); i++)
+        {
+            if (scheme.at(i) == column)
+            {
+                columnIndexes.push_back(i);
+            }
+        }
+    }
+
+    return project(columnIndexes);
 }
 
 Relation Relation::project(vector<int> columns) const

@@ -17,5 +17,8 @@ public:
     void addPredicate(Predicate& body);
     void addPredicates(vector<Predicate> predicates);
 
+    vector<Predicate> getBodyPredicates() const;
+    Predicate getHeadPredicate() const;
+
     string toString();
 };

@@ -1,6 +1,6 @@
 # makefile for project 3 pass-off tests
 
-NUM:=4
+NUM:=3
 
 buckets:=20 40 60 80 100
 numbers_20:=21 22 24

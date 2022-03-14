@@ -38,11 +38,16 @@ class Relation {
   Relation select(vector<int> positions) const;
 
   Relation project(vector<int> columns) const;
+  Relation project(vector<string> columns) const;
+
   Relation rename(vector<string> newNames) const;
 
   Relation join(const Relation& r);
   Relation Union(const Relation& r);
 
   string getName() const;
+  vector<string> getSchemeNames() const;
+
+  void setName(string name);
   int size() const;
 };

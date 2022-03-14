@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\debug.exe",
-            "args": ["../project3-passoff/80/input81.txt"],
+            "args": ["../test.txt"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

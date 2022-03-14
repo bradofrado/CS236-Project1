@@ -50,74 +50,116 @@ void Interpreter::evaluateFacts()
 
 void Interpreter::evaluateRules()
 {
+    for (Rule& rule : datalogProgram.getRules())
+    {
+        vector<Relation> immediateResults;
+        //Get the immediate results
+        for (Predicate& predicate : rule.getBodyPredicates())
+        {
+            Relation result = evaluatePredicate(predicate);
+            immediateResults.push_back(result);
+        }
 
+        //Join them
+        Relation result = immediateResults.at(0);
+        result.setName(rule.getHeadPredicate().getName());
+        for (unsigned int i = 1; i < immediateResults.size(); i++)
+        {
+            result = result.join(immediateResults.at(i));
+        }
+
+        //Project the needed columns
+        result = result.project(rule.getHeadPredicate().getParamNames());
+
+        //Rename to the original column
+        Relation& original = database.getRelation(result.getName());
+        result = result.rename(original.getSchemeNames());
+
+        original = original.Union(result);
+        
+        cout << original.toString() << endl;
+    }
+}
+
+Relation Interpreter::evaluatePredicate(Predicate predicate)
+{
+    int numResults;
+    return evaluatePredicate(predicate, numResults);
+}
+
+Relation Interpreter::evaluatePredicate(Predicate predicate, int& numResults)
+{
+    Relation& relation = database.getRelation(predicate.getName());
+
+    Query query(predicate.getParams());
+    Relation result = relation;
+    
+    vector<int> projections;
+    vector<string> newNames;
+    
+    //Select all the constant values
+    vector<int> constants = query.getConstants();
+    for (auto& index : constants)
+    {
+        result = result.select(index, query.at(index).value);
+    }
+
+    //Select all the variable values
+    map<string, vector<int>> variables = query.getVariables();
+
+    int currIt = 0;
+    for (auto& variable : variables)
+    {
+        result = result.select(variable.second);
+
+        //Optimized: get the projection indexes
+        int position = query.getParameterNamePosition(variable.first);
+
+        //The positions need to be sorted for this to work
+        //If it needs to be sorted, find where to put it
+        if (currIt > 0 && position < projections.at(currIt - 1)) 
+        {
+            int index = currIt;
+            while (index > 0 && position < projections.at(index - 1))
+            {
+                index--;
+            }
+            projections.insert(projections.begin() + index, position);
+
+            //Optimized: get the rename mapping
+            newNames.insert(newNames.begin() + index, variable.first);
+        }
+        //Otherwise stick it on the end
+        else
+        {
+            projections.push_back(position);
+
+            //Optimized: get the rename mapping
+            newNames.push_back(variable.first);
+        }
+        
+
+        currIt++;
+    }
+
+    //Get the result size
+    numResults = result.size();
+
+    //Project the result
+    result = result.project(projections);
+
+    //Rename the result
+    result = result.rename(newNames);
+
+    return result;
 }
 
 void Interpreter::evaluateQueries()
 {
     for (auto& dbQuery : datalogProgram.getQueries())
     {
-        Relation& relation = database.getRelation(dbQuery.getName());
-
-        Query query(dbQuery.getParams());
-        Relation result = relation;
-        
-        vector<int> projections;
-        vector<string> newNames;
-        
-        //Select all the constant values
-        vector<int> constants = query.getConstants();
-        for (auto& index : constants)
-        {
-            result = result.select(index, query.at(index).value);
-        }
-
-        //Select all the variable values
-        map<string, vector<int>> variables = query.getVariables();
-
-        int currIt = 0;
-        for (auto& variable : variables)
-        {
-            result = result.select(variable.second);
-
-            //Optimized: get the projection indexes
-            int position = query.getParameterNamePosition(variable.first);
-
-            //The positions need to be sorted for this to work
-            //If it needs to be sorted, find where to put it
-            if (currIt > 0 && position < projections.at(currIt - 1)) 
-            {
-                int index = currIt;
-                while (index > 0 && position < projections.at(index - 1))
-                {
-                    index--;
-                }
-                projections.insert(projections.begin() + index, position);
-
-                //Optimized: get the rename mapping
-                newNames.insert(newNames.begin() + index, variable.first);
-            }
-            //Otherwise stick it on the end
-            else
-            {
-                projections.push_back(position);
-
-                //Optimized: get the rename mapping
-                newNames.push_back(variable.first);
-            }
-            
-
-            currIt++;
-        }
-
-        //Get the result size
-        int numResults = result.size();
-
-        //Project the result
-        result = result.project(projections);
-
-        //Rename the result
-        result = result.rename(newNames);
+        int numResults;
+        Relation result = evaluatePredicate(dbQuery, numResults);
 
         //Get the result string
         string resultString = numResults > 0 ? "Yes(" + to_string(numResults) + ")" : "No";

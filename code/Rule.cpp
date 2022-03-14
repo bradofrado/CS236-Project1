@@ -37,3 +37,13 @@ void Rule::addPredicates(vector<Predicate> predicates)
         bodyPredicates.push_back(predicates.at(i));
     }
 }
+
+vector<Predicate> Rule::getBodyPredicates() const
+{
+    return bodyPredicates;
+}
+
+Predicate Rule::getHeadPredicate() const
+{
+    return headPredicate;
+}
