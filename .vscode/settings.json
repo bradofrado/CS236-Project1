@@ -6,6 +6,7 @@
         "map": "cpp",
         "xtree": "cpp",
         "unordered_map": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "iostream": "cpp"
     }
 }

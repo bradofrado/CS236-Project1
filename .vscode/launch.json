@@ -8,7 +8,7 @@
             "name": "g++.exe - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "program": "${fileDirname}\\debug.exe",
             "args": ["../project3-passoff/80/input81.txt"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

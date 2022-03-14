@@ -11,7 +11,7 @@
                 "-g",
                 "*.cpp",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\debug.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"

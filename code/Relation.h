@@ -17,6 +17,12 @@ class Relation {
   Scheme scheme;
   set<Tuple> tuples;
 
+  static bool joinable (const Scheme& leftScheme, const Scheme& rightScheme,
+		       const Tuple& leftTuple, const Tuple& rightTuple);
+
+  Tuple joinTuples(const Tuple& leftTuple, const Tuple& rightTuple);
+  Scheme joinSchemes(const Scheme& leftScheme, const Scheme& rightScheme);
+
  public:
 
   Relation(const string& name, const Scheme& scheme)
@@ -27,9 +33,6 @@ class Relation {
   void addTuple(const Tuple& tuple);
 
   string toString() const;
-
-  static bool joinable (const Scheme& leftScheme, const Scheme& rightScheme,
-		       const Tuple& leftTuple, const Tuple& rightTuple);
 
   Relation select(int index, const string& value) const;
   Relation select(vector<int> positions) const;

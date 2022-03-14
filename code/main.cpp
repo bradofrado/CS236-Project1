@@ -42,8 +42,6 @@ int main(int argc, char* argv[])
     for (auto& value : studentValues)
         studentRelation.addTuple(Tuple(value));
 
-    studentRelation.join(studentRelation);
-
     Relation courseRelation("courses", Scheme( {"ID", "Course"} ));
 
     vector<string> courseValues[] = {
