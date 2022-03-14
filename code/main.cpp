@@ -52,7 +52,18 @@ int main(int argc, char* argv[])
     for (auto& value : courseValues)
         courseRelation.addTuple(Tuple(value));
 
-    studentRelation.join(courseRelation);
+    Relation courseRelation2("courses", Scheme( {"ID", "Course"} ));
+
+    vector<string> courseValues2[] = {
+        {"'56'", "'CS 150'"},
+        {"'89'", "'Math 232'"},
+    };
+
+    for (auto& value : courseValues2)
+        courseRelation2.addTuple(Tuple(value));
+
+    cout << studentRelation.join(courseRelation).toString() << endl;
+    cout << courseRelation.Union(courseRelation2).toString() << endl;
 }
 
 DatalogProgram parseProgram(string fileName, bool p1Cout, bool p2Cout)

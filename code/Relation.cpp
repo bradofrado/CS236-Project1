@@ -11,9 +11,9 @@
 using namespace std;
 
 
-Relation::Relation(const Relation& relation) : name(relation.name), scheme(relation.scheme)
+Relation::Relation(const string& name, const Scheme& scheme, set<Tuple> tuples) : name(name), scheme(scheme)
 {
-    for (auto& tuple : relation.tuples) 
+    for (auto& tuple : tuples) 
     {
         addTuple(tuple);
     }   
@@ -161,9 +161,36 @@ Relation Relation::join(const Relation& r)
         }
     }
 
-    cout << result.toString() << endl;
+    return result;
+}
 
-    return Relation(name, scheme);
+Relation Relation::Union(const Relation& r)
+{
+    stringstream ss;
+    ss << "The relations " << name << " and " << r.name << " are not union compatible";
+
+    if (r.scheme.size() != scheme.size())
+    {
+        throw ss.str();
+    }
+
+    //Make sure the scheme names are the same
+    for (unsigned int i = 0; i < scheme.size(); i++)
+    {
+        if (scheme.at(i) != r.scheme.at(i))
+        {
+            throw ss.str();
+        }
+    }
+
+    Relation result(name, scheme, tuples);
+
+    for (Tuple tuple : r.tuples)
+    {
+        result.addTuple(tuple);
+    }
+
+    return result;
 }
 
 Scheme Relation::joinSchemes(const Scheme& leftScheme, const Scheme& rightScheme)

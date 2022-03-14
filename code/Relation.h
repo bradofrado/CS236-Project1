@@ -28,7 +28,7 @@ class Relation {
   Relation(const string& name, const Scheme& scheme)
     : name(name), scheme(scheme) { }
 
-    Relation(const Relation& relation);
+    Relation(const string& name, const Scheme& scheme, set<Tuple> tuples);
 
   void addTuple(const Tuple& tuple);
 
@@ -41,6 +41,7 @@ class Relation {
   Relation rename(vector<string> newNames) const;
 
   Relation join(const Relation& r);
+  Relation Union(const Relation& r);
 
   string getName() const;
   int size() const;
