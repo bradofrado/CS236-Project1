@@ -22,7 +22,14 @@ string Rule::toString()
         }
     }
 
+    ss << ".";
+
     return ss.str();
+}
+
+string Rule::getName() const
+{
+    return headPredicate.getName();
 }
 
 void Rule::addPredicate(Predicate& predicate)

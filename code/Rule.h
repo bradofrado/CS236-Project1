@@ -20,5 +20,7 @@ public:
     vector<Predicate> getBodyPredicates() const;
     Predicate getHeadPredicate() const;
 
+    string getName() const;
+
     string toString();
 };

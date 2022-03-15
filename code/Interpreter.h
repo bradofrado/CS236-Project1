@@ -16,6 +16,8 @@ private:
     void evaluateRules();
     void evaluateQueries();
 
+    bool evaluateRule();
+
     Relation evaluatePredicate(Predicate predicate, int& numResults);
     Relation evaluatePredicate(Predicate predicate);
 public:

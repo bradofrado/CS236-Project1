@@ -50,8 +50,23 @@ void Interpreter::evaluateFacts()
 
 void Interpreter::evaluateRules()
 {
+    cout << "Rule Evaluation" << endl;
+    int i = 0;
+    do
+    {
+       i++;
+    } while (evaluateRule());
+
+    cout << endl << "Schemes populated after " << i << " passes through the Rules." << endl << endl;
+}
+
+bool Interpreter::evaluateRule()
+{
+    bool changed = false;
     for (Rule& rule : datalogProgram.getRules())
     {
+        cout << rule.toString() << endl;
+
         vector<Relation> immediateResults;
         //Get the immediate results
         for (Predicate& predicate : rule.getBodyPredicates())
@@ -62,7 +77,7 @@ void Interpreter::evaluateRules()
 
         //Join them
         Relation result = immediateResults.at(0);
-        result.setName(rule.getHeadPredicate().getName());
+        result.setName(rule.getName());
         for (unsigned int i = 1; i < immediateResults.size(); i++)
         {
             result = result.join(immediateResults.at(i));
@@ -75,10 +90,18 @@ void Interpreter::evaluateRules()
         Relation& original = database.getRelation(result.getName());
         result = result.rename(original.getSchemeNames());
 
+        int sizeBefore = original.size();
         original = original.Union(result);
-        
-        cout << original.toString() << endl;
+
+        //If there was a change, make it known
+        if (original.size() > sizeBefore)
+        {
+            changed = true;
+            cout << original.toString() << endl;
+        }
     }
+
+    return changed;
 }
 
 Relation Interpreter::evaluatePredicate(Predicate predicate)
@@ -156,6 +179,7 @@ Relation Interpreter::evaluatePredicate(Predicate predicate, int& numResults)
 
 void Interpreter::evaluateQueries()
 {
+    cout << "Query Evaluation" << endl;
     for (auto& dbQuery : datalogProgram.getQueries())
     {
         int numResults;
@@ -166,6 +190,6 @@ void Interpreter::evaluateQueries()
 
         //Display the results of the query
         cout << dbQuery.toString() << "? " << resultString << endl;
-        cout << result.toString();
+        cout << result.toString() << endl;
     }
 }

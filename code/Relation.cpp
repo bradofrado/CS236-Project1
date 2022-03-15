@@ -29,8 +29,16 @@ void Relation::addTuple(const Tuple& tuple) {
 
 string Relation::toString() const {
     stringstream out;
-    for (auto& tuple : tuples)
-        out << "  " << tuple.toString(scheme) << endl;
+    unsigned int i = 0;
+    for (auto& tuple : tuples) {
+        out << "  " << tuple.toString(scheme);
+        i++;
+
+        if (i < tuples.size())
+        {
+            out << endl;
+        }
+    }
     return out.str();
 }
 
