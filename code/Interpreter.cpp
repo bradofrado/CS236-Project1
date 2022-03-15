@@ -88,11 +88,14 @@ bool Interpreter::evaluateRule()
 
         //Rename to the original column
         Relation& original = database.getRelation(result.getName());
-        result = result.rename(original.getSchemeNames());
-
         int sizeBefore = original.size();
-        original = original.Union(result);
-
+        
+        //To prevent an invalid argument error
+        if (result.size() > 0) {
+            result = result.rename(original.getSchemeNames());
+            original = original.Union(result);
+        }
+        
         //If there was a change, make it known
         if (original.size() > sizeBefore)
         {

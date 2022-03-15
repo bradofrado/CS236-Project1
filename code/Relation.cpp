@@ -21,7 +21,7 @@ Relation::Relation(const string& name, const Scheme& scheme, set<Tuple> tuples) 
 
 void Relation::addTuple(const Tuple& tuple) {
     if (tuple.size() != scheme.size()) {
-        throw "Tuple must have the same size as the scheme";
+        throw invalid_argument("Tuple must have the same size as the scheme");
     }
 
     tuples.insert(tuple);
@@ -75,7 +75,7 @@ Relation Relation::select(vector<int> positions) const
 {
     if (positions.size() == 0)
     {
-        throw "No positions";
+        throw invalid_argument("No positions");
     }
 
     Relation result(name, scheme);
@@ -146,7 +146,7 @@ Relation Relation::project(vector<int> columns) const
     {
         if (index >= (int)scheme.size())
         {
-            throw "All the indexes must map to a column in this scheme";
+            throw invalid_argument("All the indexes must map to a column in this scheme");
         }
 
         result.scheme.push_back(scheme.at(index));
@@ -172,7 +172,7 @@ Relation Relation::rename(vector<string> newNames) const
 {
     if (newNames.size() != scheme.size())
     {
-        throw "The rename map must have the same size as this scheme";
+        throw invalid_argument("The rename map must have the same size as this scheme");
     }
 
     Relation result(*this);
@@ -212,12 +212,11 @@ Relation Relation::join(const Relation& r)
 
 Relation Relation::Union(const Relation& r)
 {
-    stringstream ss;
-    ss << "The relations " << name << " and " << r.name << " are not union compatible";
+    invalid_argument exception("The relations " + name + " and " + r.name + " are not union compatible");
 
     if (r.scheme.size() != scheme.size())
     {
-        throw ss.str();
+        throw exception;
     }
 
     //Make sure the scheme names are the same
@@ -225,7 +224,7 @@ Relation Relation::Union(const Relation& r)
     {
         if (scheme.at(i) != r.scheme.at(i))
         {
-            throw ss.str();
+            throw exception;
         }
     }
 
@@ -322,7 +321,7 @@ Tuple Relation::joinTuples(const Tuple& leftTuple, const Tuple& rightTuple)
 
     if (scheme.size() != values.size())
     {
-        throw "Something went wrong with combining these tuples: " + leftTuple.toString(scheme) + rightTuple.toString(scheme);
+        throw runtime_error("Something went wrong with combining these tuples: " + leftTuple.toString(scheme) + rightTuple.toString(scheme));
     }
 
     return Tuple(values);
