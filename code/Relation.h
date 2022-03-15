@@ -20,7 +20,7 @@ class Relation {
   static bool joinable (const Scheme& leftScheme, const Scheme& rightScheme,
 		       const Tuple& leftTuple, const Tuple& rightTuple);
 
-  Tuple joinTuples(const Tuple& leftTuple, const Tuple& rightTuple);
+  Tuple joinTuples(const Scheme& rightScheme, const Tuple& leftTuple, const Tuple& rightTuple);
   Scheme joinSchemes(const Scheme& leftScheme, const Scheme& rightScheme);
 
  public:

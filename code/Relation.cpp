@@ -104,17 +104,6 @@ Relation Relation::select(vector<int> positions) const
 Relation Relation::project(vector<string> columns) const
 {
     vector<int> columnIndexes;
-    // for (unsigned int i = 0; i < scheme.size(); i++) 
-    // {
-    //     for (string column : columns)
-    //     {
-    //         if (scheme.at(i) == column)
-    //         {
-    //             columnIndexes.push_back(i);
-    //         }
-    //     }
-    // }
-
     for (string column : columns) 
     {
         for (unsigned int i = 0; i < scheme.size(); i++)
@@ -201,7 +190,7 @@ Relation Relation::join(const Relation& r)
         {
             if (joinable(leftScheme, rightScheme, leftTuple, rightTuple))
             {
-                Tuple tuple = result.joinTuples(leftTuple, rightTuple);
+                Tuple tuple = result.joinTuples(rightScheme, leftTuple, rightTuple);
                 result.addTuple(tuple);
             }
         }
@@ -240,24 +229,7 @@ Relation Relation::Union(const Relation& r)
 
 Scheme Relation::joinSchemes(const Scheme& leftScheme, const Scheme& rightScheme)
 {
-    vector<string> names;
-    for (string leftName : leftScheme) 
-    {
-        bool isSame = false;
-        for (string rightName : rightScheme)
-        {
-            if (leftName == rightName)
-            {
-                isSame = true;
-                break;
-            }
-        }
-
-        if (!isSame)
-        {
-            names.push_back(leftName);
-        }
-    }
+    Scheme result(leftScheme);
 
     for (string rightName : rightScheme) 
     {
@@ -273,22 +245,25 @@ Scheme Relation::joinSchemes(const Scheme& leftScheme, const Scheme& rightScheme
 
         if (!isSame)
         {
-            names.push_back(rightName);
+            result.push_back(rightName);
         }
     }
 
-    return Scheme(names);
+    return result;
 }
 
-Tuple Relation::joinTuples(const Tuple& leftTuple, const Tuple& rightTuple)
+Tuple Relation::joinTuples(const Scheme& rightScheme, const Tuple& leftTuple, const Tuple& rightTuple)
 {
-    vector<string> values;
-    for (string leftValue : leftTuple) 
+    Tuple result(leftTuple);
+
+    for (unsigned int i = 0; i < rightScheme.size(); i++) 
     {
+        string rightName = rightScheme.at(i);
         bool isSame = false;
-        for (string rightValue : rightTuple)
+        for (unsigned int j = 0; j < leftTuple.size(); j++)
         {
-            if (leftValue == rightValue)
+            string leftName = scheme.at(j);
+            if (rightName == leftName)
             {
                 isSame = true;
                 break;
@@ -297,34 +272,16 @@ Tuple Relation::joinTuples(const Tuple& leftTuple, const Tuple& rightTuple)
 
         if (!isSame)
         {
-            values.push_back(leftValue);
+            result.push_back(rightTuple.at(i));
         }
     }
 
-    for (string rightValue : rightTuple) 
-    {
-        bool isSame = false;
-        for (string leftValue : leftTuple)
-        {
-            if (rightValue == leftValue)
-            {
-                isSame = true;
-                break;
-            }
-        }
-
-        if (!isSame)
-        {
-            values.push_back(rightValue);
-        }
-    }
-
-    if (scheme.size() != values.size())
+    if (scheme.size() != result.size())
     {
         throw runtime_error("Something went wrong with combining these tuples: " + leftTuple.toString(scheme) + rightTuple.toString(scheme));
     }
 
-    return Tuple(values);
+    return result;
 }
 
 bool Relation::joinable (const Scheme& leftScheme, const Scheme& rightScheme,
