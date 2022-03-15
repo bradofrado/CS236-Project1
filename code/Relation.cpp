@@ -227,6 +227,30 @@ Relation Relation::Union(const Relation& r)
     return result;
 }
 
+//Find the difference (tuples in this not in r)
+Relation Relation::diff(const Relation& r)
+{
+    //Our resulting relation with the difference
+    Relation result(name, scheme);
+
+    //A way to see what the difference is
+    Relation temp(r.name, r.scheme, r.tuples);
+
+    for (const Tuple& tuple : tuples)
+    {
+        int origSize = temp.size();
+        temp.addTuple(tuple);
+
+        //If the size changed, that means we have found a difference
+        if (temp.size() > origSize)
+        {
+            result.addTuple(tuple);
+        }
+    }
+
+    return result;
+}
+
 Scheme Relation::joinSchemes(const Scheme& leftScheme, const Scheme& rightScheme)
 {
     Scheme result(leftScheme);

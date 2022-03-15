@@ -45,6 +45,8 @@ class Relation {
   Relation join(const Relation& r);
   Relation Union(const Relation& r);
 
+  Relation diff(const Relation& r);
+
   string getName() const;
   vector<string> getSchemeNames() const;
 

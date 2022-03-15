@@ -93,14 +93,17 @@ bool Interpreter::evaluateRule()
         //To prevent an invalid argument error
         if (result.size() > 0) {
             result = result.rename(original.getSchemeNames());
+
+            Relation diff = result.diff(original);
+
             original = original.Union(result);
-        }
-        
-        //If there was a change, make it known
-        if (original.size() > sizeBefore)
-        {
-            changed = true;
-            cout << original.toString() << endl;
+
+            //If there was a change, make it known
+            if (original.size() > sizeBefore)
+            {
+                changed = true;
+                cout << diff.toString() << endl;
+            }
         }
     }
 
