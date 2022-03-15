@@ -21,5 +21,5 @@ run:
 	done
 
 compile:
-	g++ -Wall -Werror -std=c++17 -g *.cpp -o lab$(NUM)
+	g++ -Wall -Werror -std=c++17 -g code/*.cpp -o lab$(NUM)
 

@@ -193,6 +193,9 @@ void Interpreter::evaluateQueries()
 
         //Display the results of the query
         cout << dbQuery.toString() << "? " << resultString << endl;
-        cout << result.toString() << endl;
+
+        if (result.size() > 0) {
+            cout << result.toString() << endl;
+        }
     }
 }
