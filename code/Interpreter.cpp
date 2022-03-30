@@ -202,3 +202,28 @@ void Interpreter::evaluateQueries()
         }
     }
 }
+
+Graph Interpreter::makeGraph(const vector<Rule>& rules)
+{
+    Graph graph(rules.size());
+
+    for (unsigned fromID = 0; fromID < rules.size(); fromID++) {
+        const Rule& fromRule = rules.at(fromID);
+
+        vector<Predicate> bodyPredicates = fromRule.getBodyPredicates();
+        for (unsigned pred = 0; pred < bodyPredicates.size(); pred++) {
+            const Predicate& bodyPred = bodyPredicates.at(pred);
+
+            for (unsigned toID = 0; toID < rules.size(); toID++) {
+                const Rule& toRule = rules.at(toID); 
+
+                Predicate headPred = toRule.getHeadPredicate();
+                if (headPred.getName() == bodyPred.getName()) {       
+                    graph.addEdge(fromID, toID);
+                }
+            }
+        }
+    }
+
+    return graph;
+}

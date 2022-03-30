@@ -6,7 +6,7 @@
 
 using namespace std;
 
-string Rule::toString()
+string Rule::toString() const
 {
     stringstream ss;
 

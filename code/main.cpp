@@ -10,6 +10,8 @@
 #include "Relation.h"
 #include "Database.h"
 #include "Interpreter.h"
+#include "Node.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -17,6 +19,7 @@ string getInput(string fileName);
 vector<Token> scanTokens(string input, bool doCout = false);
 DatalogProgram parseTokens(vector<Token>);
 DatalogProgram parseProgram(string fileName, bool p1Cout = false, bool p2Cout = false);
+void test();
 
 int main(int argc, char* argv[]) 
 {
@@ -26,49 +29,70 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
 
-    DatalogProgram datalogProgram = parseProgram(fileName);
+    // DatalogProgram datalogProgram = parseProgram(fileName);
     
-    Interpreter interpreter(datalogProgram);
+    // Interpreter interpreter(datalogProgram);
 
-    interpreter.run();
+    // interpreter.run();
 
-    //test();
+    test();
 }
+
 
 void test()
 {
-    Relation studentRelation("students", Scheme( {"ID", "Name", "Major"} ));
+    // Node node;
+    // node.addEdge(4);
+    // node.addEdge(8);
+    // node.addEdge(2);
+    // cout << node.toString() << endl;
+    
+    // Graph graph(3);
+    // graph.addEdge(1,2);
+    // graph.addEdge(1,0);
+    // graph.addEdge(0,1);
+    // graph.addEdge(1,1);
+    // cout << graph.toString();
 
-    vector<string> studentValues[] = {
-        {"'42'", "'Ann'", "'CS'"},
-        {"'64'", "'Ned'", "'EE'"},
+    // predicate names for fake rules
+    // first is name for head predicate
+    // second is names for body predicates
+    
+    // pair<string,vector<string>> ruleNames[] = {
+    //     { "A", { "B" } },
+    //     { "B", { "B", "A" } },
+    // };
+
+    // pair<string,vector<string>> ruleNames[] = {
+    //     { "Sibling", { "Sibling" } },
+    //     { "Ancestor", { "Ancestor", "Parent" } },
+    //     { "Ancestor", { "Parent" } },
+    // };
+
+    pair<string,vector<string>> ruleNames[] = {
+        { "A", { "B", "C" } },
+        { "B", { "A", "D" } },
+        { "B", { "B" } },
+        { "E", { "F", "G" } },
+        { "E", { "E", "F" } },
     };
 
-    for (auto& value : studentValues)
-        studentRelation.addTuple(Tuple(value));
+    vector<Rule> rules;
 
-    Relation courseRelation("courses", Scheme( {"ID", "Course"} ));
+    for (auto& rulePair : ruleNames) {
+        string headName = rulePair.first;
+        Predicate headPredicate(headName);
+        Rule rule = Rule(headPredicate);
+        vector<string> bodyNames = rulePair.second;
+        for (auto& bodyName : bodyNames) {
+            Predicate bodyPredicate(bodyName);
+            rule.addPredicate(bodyPredicate);
+        }
+        rules.push_back(rule);
+    }
 
-    vector<string> courseValues[] = {
-        {"'42'", "'CS 100'"},
-        {"'32'", "'CS 232'"},
-    };
-
-    for (auto& value : courseValues)
-        courseRelation.addTuple(Tuple(value));
-
-    Relation courseRelation2("courses", Scheme( {"ID", "Course"} ));
-
-    vector<string> courseValues2[] = {
-        {"'56'", "'CS 150'"},
-        {"'89'", "'Math 232'"},
-    };
-
-    for (auto& value : courseValues2)
-        courseRelation2.addTuple(Tuple(value));
-
-    cout << studentRelation.join(courseRelation).toString() << endl;
-    cout << courseRelation.Union(courseRelation2).toString() << endl;
+    Graph graph = Interpreter::makeGraph(rules);
+    cout << graph.toString();
 }
 
 DatalogProgram parseProgram(string fileName, bool p1Cout, bool p2Cout)

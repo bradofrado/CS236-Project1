@@ -7,7 +7,7 @@
 
 using namespace std;
 
-string Predicate::toString()
+string Predicate::toString() const
 {
     stringstream ss;
 

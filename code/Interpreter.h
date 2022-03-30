@@ -2,6 +2,7 @@
 
 #include "DatalogProgram.h"
 #include "Database.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -24,4 +25,6 @@ public:
     Interpreter(DatalogProgram datalogProgram);
 
     void run();
+
+    static Graph makeGraph(const vector<Rule>& rules);
 };

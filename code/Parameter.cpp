@@ -3,7 +3,7 @@
 
 using namespace std;
 
-string Parameter::toString()
+string Parameter::toString() const
 {
     return value;
 }

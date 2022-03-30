@@ -10,5 +10,5 @@ struct Parameter
     string value;
     bool isId;
     
-    string toString();
+    string toString() const;
 };

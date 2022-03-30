@@ -13,7 +13,7 @@ private:
     vector<Parameter> parameters;
 public:
     Predicate(string _name) : name(_name) {}
-    string toString();
+    string toString() const;
 
     void addParam(Parameter& param);
     void addParams(vector<Parameter> params);

@@ -22,5 +22,5 @@ public:
 
     string getName() const;
 
-    string toString();
+    string toString() const;
 };
