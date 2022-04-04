@@ -17,4 +17,9 @@ public:
 
     void addEdge(int fromNodeID, int toNodeID);
     string toString() const;
+
+    Node& at(int index);
+
+    map<int, Node>::iterator begin();
+    map<int, Node>::iterator end();
 };

@@ -33,3 +33,18 @@ string Graph::toString() const
 
     return ss.str();
 }
+
+map<int, Node>::iterator Graph::begin()
+{
+    return nodes.begin();
+}
+
+map<int, Node>::iterator Graph::end()
+{
+    return nodes.end();
+}
+
+Node& Graph::at(int index)
+{
+    return nodes.at(index);
+}

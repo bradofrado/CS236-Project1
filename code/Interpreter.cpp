@@ -3,6 +3,7 @@
 #include "Scheme.h"
 #include "Relation.h"
 #include "Query.h"
+#include "Graph.h"
 #include <map>
 #include <string>
 
@@ -49,6 +50,22 @@ void Interpreter::evaluateFacts()
 }
 
 void Interpreter::evaluateRules()
+{
+    // Build the dependency graph.
+    Graph dependencyGraph = Interpreter::makeGraph(datalogProgram.getRules());
+
+    //Build the reverse dependency graph.
+    Graph reverseGraph = Interpreter::makeGraph(datalogProgram.getRules(), true);
+
+    //Run DFS-Forest on the reverse dependency graph.
+    stack<int> postOrders = Interpreter::dfsForest(reverseGraph);
+
+    //Find the strongly connected components (SCCs).
+
+    //Evaluate the rules in each component.
+}
+
+void Interpreter::evaluateRulesOld()
 {
     cout << "Rule Evaluation" << endl;
     int i = 0;
@@ -203,7 +220,7 @@ void Interpreter::evaluateQueries()
     }
 }
 
-Graph Interpreter::makeGraph(const vector<Rule>& rules)
+Graph Interpreter::makeGraph(const vector<Rule>& rules, bool reverse)
 {
     Graph graph(rules.size());
 
@@ -218,12 +235,85 @@ Graph Interpreter::makeGraph(const vector<Rule>& rules)
                 const Rule& toRule = rules.at(toID); 
 
                 Predicate headPred = toRule.getHeadPredicate();
-                if (headPred.getName() == bodyPred.getName()) {       
-                    graph.addEdge(fromID, toID);
+                if (headPred.getName() == bodyPred.getName()) {     
+                    if (reverse) {
+                        graph.addEdge(toID, fromID);
+                    }  
+                    else {
+                        graph.addEdge(fromID, toID);
+                    }
                 }
             }
         }
     }
 
     return graph;
+}
+
+//2
+//1
+//0
+
+//4
+//3
+//5
+
+//5
+//3
+//4
+stack<int> mergeStacks(stack<int> s1, stack<int> s2)
+{
+    int size = s2.size();
+    stack<int> empty;
+    for (int i = 0; i < size; i++)
+    {
+        int top = s2.top();
+        s2.pop();
+        empty.push(top);
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        int top = empty.top();
+        empty.pop();
+        s1.push(top);
+    }
+
+    return s1;
+}
+
+stack<int> Interpreter::dfsForest(Graph graph)
+{
+    stack<int> nodes;
+
+    for (auto& pair : graph)
+    {
+        if (!pair.second.marked())
+        {
+            stack<int> curr = dfs(pair.second, graph);
+
+            nodes = mergeStacks(nodes, curr);
+            nodes.push(pair.first);
+        }
+    }
+
+    return nodes;
+}
+
+stack<int> Interpreter::dfs(Node& node, Graph& graph)
+{
+    node.mark();
+    stack<int> nodes;
+    for (auto& Id : node)
+    {
+        Node& curr = graph.at(Id);
+
+        if (!curr.marked())
+        {
+            nodes = dfs(curr, graph);
+            nodes.push(Id);
+        }
+    }
+
+    return nodes;
 }

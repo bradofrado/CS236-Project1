@@ -3,6 +3,8 @@
 #include "DatalogProgram.h"
 #include "Database.h"
 #include "Graph.h"
+#include "Node.h"
+#include <stack>
 
 using namespace std;
 
@@ -14,6 +16,7 @@ private:
 
     void evaluateSchemes();
     void evaluateFacts();
+    void evaluateRulesOld();
     void evaluateRules();
     void evaluateQueries();
 
@@ -26,5 +29,7 @@ public:
 
     void run();
 
-    static Graph makeGraph(const vector<Rule>& rules);
+    static Graph makeGraph(const vector<Rule>& rules, bool reverse = false);
+    static stack<int> dfsForest(Graph graph);
+    static stack<int> dfs(Node& node, Graph& graph);
 };

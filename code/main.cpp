@@ -92,7 +92,15 @@ void test()
     }
 
     Graph graph = Interpreter::makeGraph(rules);
-    cout << graph.toString();
+    Graph reverseGraph = Interpreter::makeGraph(rules, true);
+    stack<int> postOrders = Interpreter::dfsForest(reverseGraph);
+
+    int size = postOrders.size();
+    for (int i = 0; i < size; i++)
+    {
+        cout << postOrders.top() << endl;
+        postOrders.pop();
+    }
 }
 
 DatalogProgram parseProgram(string fileName, bool p1Cout, bool p2Cout)

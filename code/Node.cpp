@@ -29,3 +29,22 @@ string Node::toString() const
 
     return ss.str();
 }
+void Node::mark()
+{
+    isMarked = true;
+}
+
+bool Node::marked()
+{
+    return isMarked;
+}
+
+set<int>::iterator Node::begin()
+{
+    return adjacentNodeIDs.begin();
+}
+
+set<int>::iterator Node::end()
+{
+    return adjacentNodeIDs.end();
+}
