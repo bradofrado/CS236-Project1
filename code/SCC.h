@@ -10,7 +10,7 @@ class SCC : public vector<Rule>
 private:
     string name;
 public:
-    SCC(stack<int> ids, vector<Rule> rules);
+    SCC(vector<int> ids, vector<Rule> rules);
     bool isRuleDependent();
 
     string toString() const;

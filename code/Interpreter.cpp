@@ -352,6 +352,7 @@ stack<int> Interpreter::dfs(int index, Graph& graph)
     node.mark();
 
     stack<int> nodes;
+    
     for (auto& Id : node)
     {
         Node& curr = graph.at(Id);
@@ -365,6 +366,7 @@ stack<int> Interpreter::dfs(int index, Graph& graph)
     }
 
     nodes.push(index);
+    
 
     return nodes;
 }
@@ -382,22 +384,33 @@ vector<SCC> Interpreter::findSCC(stack<int> postOrders, Graph& graph)
 
         stack<int> orders = dfs(top, graph);
 
-        vector<Rule> rules;
-        SCC scc(orders, rules);
         int size = orders.size();
+
+        if (size == 0)
+        {
+            continue;
+        }
+
+        map<int, Rule> rulesMap;
+        vector<Rule> result;
+        vector<int> ids;
+
         for (int i = 0; i < size; i++)
         {
             int top = orders.top();
             orders.pop();
 
-            scc.push_back(datalogProgram.getRules().at(top));
+            rulesMap[top] = datalogProgram.getRules().at(top);
         }
 
-        if (scc.size() > 0)
+        for (auto& pair : rulesMap)
         {
-            sccs.push_back(scc);
+            result.push_back(pair.second);
+            ids.push_back(pair.first);
         }
-        
+        SCC scc(ids, result);
+
+        sccs.push_back(scc);
     }
 
     return sccs;

@@ -13,6 +13,8 @@ private:
     vector<Parameter> parameters;
 public:
     Predicate(string _name) : name(_name) {}
+    Predicate() {}
+    
     string toString() const;
 
     void addParam(Parameter& param);

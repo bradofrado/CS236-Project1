@@ -4,16 +4,15 @@
 #include <sstream>
 #include <vector>
 
-SCC::SCC(stack<int> ids, vector<Rule> rules) : vector<Rule>(rules) 
+SCC::SCC(vector<int> ids, vector<Rule> rules) : vector<Rule>(rules) 
 {
     stringstream ss;
     int size = ids.size();
     for (int i = 0; i < size; i++)
     {
-        int top = ids.top();
-        ids.pop();
+        int id = ids.at(i);
 
-        ss << "R" << top;
+        ss << "R" << id;
         if (i < size - 1) 
         {
             ss << ",";

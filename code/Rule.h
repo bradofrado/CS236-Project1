@@ -14,6 +14,8 @@ private:
 
 public:
     Rule(Predicate& _head) : headPredicate(_head) {}
+    Rule() {}
+
     void addPredicate(Predicate& body);
     void addPredicates(vector<Predicate> predicates);
 
