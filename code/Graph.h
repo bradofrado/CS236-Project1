@@ -20,6 +20,8 @@ public:
 
     Node& at(int index);
 
+    void unmarkNodes();
+
     map<int, Node>::iterator begin();
     map<int, Node>::iterator end();
 };

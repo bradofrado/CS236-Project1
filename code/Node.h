@@ -19,6 +19,7 @@ public:
 
     bool marked();
     void mark();
+    void unmark();
 
     set<int>::iterator begin();
     set<int>::iterator end();

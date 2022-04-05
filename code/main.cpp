@@ -29,18 +29,18 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
 
-    // DatalogProgram datalogProgram = parseProgram(fileName);
+    DatalogProgram datalogProgram = parseProgram(fileName);
     
-    // Interpreter interpreter(datalogProgram);
+    Interpreter interpreter(datalogProgram);
 
-    // interpreter.run();
+    interpreter.run();
 
-    test();
+    //test();
 }
 
 
 void test()
-{
+{   
     // Node node;
     // node.addEdge(4);
     // node.addEdge(8);

@@ -4,6 +4,7 @@
 #include "Relation.h"
 #include "Query.h"
 #include "Graph.h"
+#include "SCC.h"
 #include <map>
 #include <string>
 
@@ -61,8 +62,27 @@ void Interpreter::evaluateRules()
     stack<int> postOrders = Interpreter::dfsForest(reverseGraph);
 
     //Find the strongly connected components (SCCs).
-
+    vector<SCC> sccs = findSCC(postOrders, dependencyGraph);
+    
     //Evaluate the rules in each component.
+    evaluateRulesWithSCC(sccs);
+}
+
+void Interpreter::evaluateRulesWithSCC(vector<SCC> sccs)
+{
+    cout << "Rule Evaluation" << endl;
+
+    for (SCC scc : sccs)
+    {
+        cout << scc.toString() << endl;
+        int i = 0;
+        do
+        {
+            i++;
+        } while (evaluateRule(scc));
+
+       cout << i << " passes: " << scc.getName() << endl;
+    }
 }
 
 void Interpreter::evaluateRulesOld()
@@ -72,15 +92,15 @@ void Interpreter::evaluateRulesOld()
     do
     {
        i++;
-    } while (evaluateRule());
+    } while (evaluateRule(datalogProgram.getRules()));
 
     cout << endl << "Schemes populated after " << i << " passes through the Rules." << endl << endl;
 }
 
-bool Interpreter::evaluateRule()
+bool Interpreter::evaluateRule(vector<Rule> rules)
 {
     bool changed = false;
-    for (Rule& rule : datalogProgram.getRules())
+    for (Rule& rule : rules)
     {
         cout << rule.toString() << endl;
 
@@ -261,22 +281,21 @@ Graph Interpreter::makeGraph(const vector<Rule>& rules, bool reverse)
 //5
 //3
 //4
-stack<int> mergeStacks(stack<int> s1, stack<int> s2)
+stack<int> mergeStacks(stack<int> s1, vector<int> s2)
 {
-    int size = s2.size();
-    stack<int> empty;
-    for (int i = 0; i < size; i++)
+    for (int id : s2)
     {
-        int top = s2.top();
-        s2.pop();
-        empty.push(top);
+        s1.push(id);
     }
 
-    for (int i = 0; i < size; i++)
+    return s1;
+}
+
+vector<int> mergeLists(vector<int> s1, vector<int> s2)
+{
+    for (int id : s2)
     {
-        int top = empty.top();
-        empty.pop();
-        s1.push(top);
+        s1.push_back(id);
     }
 
     return s1;
@@ -290,30 +309,71 @@ stack<int> Interpreter::dfsForest(Graph graph)
     {
         if (!pair.second.marked())
         {
-            stack<int> curr = dfs(pair.second, graph);
+            vector<int> curr = dfs(pair.first, graph);
 
             nodes = mergeStacks(nodes, curr);
-            nodes.push(pair.first);
+            //nodes.push(pair.first);
         }
     }
 
     return nodes;
 }
 
-stack<int> Interpreter::dfs(Node& node, Graph& graph)
+vector<int> Interpreter::dfs(int index, Graph& graph)
 {
+    Node& node = graph.at(index);
+
+    if (node.marked())
+    {
+        return vector<int>();
+    }
+    
     node.mark();
-    stack<int> nodes;
+
+    vector<int> nodes;
     for (auto& Id : node)
     {
         Node& curr = graph.at(Id);
 
         if (!curr.marked())
         {
-            nodes = dfs(curr, graph);
-            nodes.push(Id);
+            vector<int> list = dfs(Id, graph);
+            nodes = mergeLists(nodes, list);
+            //nodes.push_back(Id);
         }
     }
 
+    nodes.push_back(index);
+
     return nodes;
+}
+
+vector<SCC> Interpreter::findSCC(stack<int> postOrders, Graph& graph)
+{
+    vector<SCC> sccs;
+    graph.unmarkNodes();
+
+    int size = postOrders.size();
+    for (int i = 0; i < size; i++)
+    {
+        int top = postOrders.top();
+        postOrders.pop();
+
+        vector<int> orders = dfs(top, graph);
+
+        vector<Rule> rules;
+        SCC scc("R"+top, rules);
+        for (int id : orders)
+        {
+            scc.push_back(datalogProgram.getRules().at(id));
+        }
+
+        if (scc.size() > 0)
+        {
+            sccs.push_back(scc);
+        }
+        
+    }
+
+    return sccs;
 }

@@ -48,3 +48,11 @@ Node& Graph::at(int index)
 {
     return nodes.at(index);
 }
+
+void Graph::unmarkNodes()
+{
+    for (auto& pair : nodes)
+    {
+        pair.second.unmark();
+    }
+}

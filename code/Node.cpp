@@ -34,6 +34,11 @@ void Node::mark()
     isMarked = true;
 }
 
+void Node::unmark()
+{
+    isMarked = false;
+}
+
 bool Node::marked()
 {
     return isMarked;

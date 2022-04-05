@@ -4,7 +4,9 @@
 #include "Database.h"
 #include "Graph.h"
 #include "Node.h"
+#include "SCC.h"
 #include <stack>
+#include <vector>
 
 using namespace std;
 
@@ -18,9 +20,10 @@ private:
     void evaluateFacts();
     void evaluateRulesOld();
     void evaluateRules();
+    void evaluateRulesWithSCC(vector<SCC> sccs);
     void evaluateQueries();
 
-    bool evaluateRule();
+    bool evaluateRule(vector<Rule> rules);
 
     Relation evaluatePredicate(Predicate predicate, int& numResults);
     Relation evaluatePredicate(Predicate predicate);
@@ -31,5 +34,7 @@ public:
 
     static Graph makeGraph(const vector<Rule>& rules, bool reverse = false);
     static stack<int> dfsForest(Graph graph);
-    static stack<int> dfs(Node& node, Graph& graph);
+    static vector<int> dfs(int index, Graph& graph);
+
+    vector<SCC> findSCC(stack<int> postOrders, Graph& graph);
 };
