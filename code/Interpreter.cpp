@@ -291,11 +291,22 @@ Graph Interpreter::makeGraph(const vector<Rule>& rules, bool reverse)
 //5
 //3
 //4
-stack<int> mergeStacks(stack<int> s1, vector<int> s2)
+stack<int> mergeStacks(stack<int> s1, stack<int> s2)
 {
-    for (int id : s2)
+    int size = s2.size();
+    stack<int> empty;
+    for (int i = 0; i < size; i++)
     {
-        s1.push(id);
+        int top = s2.top();
+        s2.pop();
+        empty.push(top);
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        int top = empty.top();
+        empty.pop();
+        s1.push(top);
     }
 
     return s1;
@@ -319,7 +330,7 @@ stack<int> Interpreter::dfsForest(Graph graph)
     {
         if (!pair.second.marked())
         {
-            vector<int> curr = dfs(pair.first, graph);
+            stack<int> curr = dfs(pair.first, graph);
 
             nodes = mergeStacks(nodes, curr);
             //nodes.push(pair.first);
@@ -329,31 +340,31 @@ stack<int> Interpreter::dfsForest(Graph graph)
     return nodes;
 }
 
-vector<int> Interpreter::dfs(int index, Graph& graph)
+stack<int> Interpreter::dfs(int index, Graph& graph)
 {
     Node& node = graph.at(index);
 
     if (node.marked())
     {
-        return vector<int>();
+        return stack<int>();
     }
 
     node.mark();
 
-    vector<int> nodes;
+    stack<int> nodes;
     for (auto& Id : node)
     {
         Node& curr = graph.at(Id);
 
         if (!curr.marked())
         {
-            vector<int> list = dfs(Id, graph);
-            nodes = mergeLists(nodes, list);
+            stack<int> list = dfs(Id, graph);
+            nodes = mergeStacks(nodes, list);
             //nodes.push_back(Id);
         }
     }
 
-    nodes.push_back(index);
+    nodes.push(index);
 
     return nodes;
 }
@@ -369,13 +380,17 @@ vector<SCC> Interpreter::findSCC(stack<int> postOrders, Graph& graph)
         int top = postOrders.top();
         postOrders.pop();
 
-        vector<int> orders = dfs(top, graph);
+        stack<int> orders = dfs(top, graph);
 
         vector<Rule> rules;
-        SCC scc("R"+to_string(top), rules);
-        for (int id : orders)
+        SCC scc(orders, rules);
+        int size = orders.size();
+        for (int i = 0; i < size; i++)
         {
-            scc.push_back(datalogProgram.getRules().at(id));
+            int top = orders.top();
+            orders.pop();
+
+            scc.push_back(datalogProgram.getRules().at(top));
         }
 
         if (scc.size() > 0)

@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\debug.exe",
-            "args": ["../test.txt"],
+            "args": ["../project5-tests/in58.txt"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

@@ -2,6 +2,7 @@
 
 #include "Rule.h"
 #include <vector>
+#include <stack>
 #include <string>
 
 class SCC : public vector<Rule>
@@ -9,10 +10,9 @@ class SCC : public vector<Rule>
 private:
     string name;
 public:
-    SCC(string _name, vector<Rule> rules) : vector<Rule>(rules), name(_name) {}
-
+    SCC(stack<int> ids, vector<Rule> rules);
     bool isRuleDependent();
-    
+
     string toString() const;
     string getName() const;
 };

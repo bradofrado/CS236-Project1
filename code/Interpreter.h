@@ -34,7 +34,7 @@ public:
 
     static Graph makeGraph(const vector<Rule>& rules, bool reverse = false);
     static stack<int> dfsForest(Graph graph);
-    static vector<int> dfs(int index, Graph& graph);
+    static stack<int> dfs(int index, Graph& graph);
 
     vector<SCC> findSCC(stack<int> postOrders, Graph& graph);
 };
