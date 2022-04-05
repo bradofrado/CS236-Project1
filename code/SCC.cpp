@@ -10,3 +10,8 @@ string SCC::getName() const
 {
     return name;
 }
+
+bool SCC::isRuleDependent()
+{
+    return size() > 1 || at(0).getBodyPredicates().size() > 1 || at(0).getName() == at(0).getBodyPredicates().at(0).getName();
+}

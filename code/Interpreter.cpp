@@ -55,6 +55,8 @@ void Interpreter::evaluateRules()
     // Build the dependency graph.
     Graph dependencyGraph = Interpreter::makeGraph(datalogProgram.getRules());
 
+    cout << "Dependency Graph" << endl << dependencyGraph.toString() << endl;
+
     //Build the reverse dependency graph.
     Graph reverseGraph = Interpreter::makeGraph(datalogProgram.getRules(), true);
 
@@ -78,11 +80,19 @@ void Interpreter::evaluateRulesWithSCC(vector<SCC> sccs)
         int i = 0;
         do
         {
+            //Only evaluate scc that aren't rule dependent once (have one rule not itself)
+            if (!scc.isRuleDependent() && i > 0)
+            {
+                break;
+            }
+
             i++;
         } while (evaluateRule(scc));
 
        cout << i << " passes: " << scc.getName() << endl;
     }
+
+    cout << endl;
 }
 
 void Interpreter::evaluateRulesOld()
@@ -327,7 +337,7 @@ vector<int> Interpreter::dfs(int index, Graph& graph)
     {
         return vector<int>();
     }
-    
+
     node.mark();
 
     vector<int> nodes;
@@ -362,7 +372,7 @@ vector<SCC> Interpreter::findSCC(stack<int> postOrders, Graph& graph)
         vector<int> orders = dfs(top, graph);
 
         vector<Rule> rules;
-        SCC scc("R"+top, rules);
+        SCC scc("R"+to_string(top), rules);
         for (int id : orders)
         {
             scc.push_back(datalogProgram.getRules().at(id));
