@@ -32,7 +32,21 @@ string SCC::getName() const
     return name;
 }
 
+//If there are multiple rules or a single rule depends on itself,
+//then it is rule dependent (must run fix point)
 bool SCC::isRuleDependent()
 {
-    return size() > 1 || at(0).getBodyPredicates().size() > 1 || at(0).getName() == at(0).getBodyPredicates().at(0).getName();
+    if (size() > 1) return true;
+
+    Rule rule = at(0);
+    vector<Predicate> bodies = rule.getBodyPredicates();
+    for (Predicate pred : bodies)
+    {
+        if (pred.getName() == rule.getName())
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
