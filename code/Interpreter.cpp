@@ -280,17 +280,6 @@ Graph Interpreter::makeGraph(const vector<Rule>& rules, bool reverse)
     return graph;
 }
 
-//2
-//1
-//0
-
-//4
-//3
-//5
-
-//5
-//3
-//4
 stack<int> mergeStacks(stack<int> s1, stack<int> s2)
 {
     int size = s2.size();
@@ -325,6 +314,7 @@ vector<int> mergeLists(vector<int> s1, vector<int> s2)
 stack<int> Interpreter::dfsForest(Graph graph)
 {
     stack<int> nodes;
+    graph.unmarkNodes();
 
     for (auto& pair : graph)
     {
@@ -333,7 +323,6 @@ stack<int> Interpreter::dfsForest(Graph graph)
             stack<int> curr = dfs(pair.first, graph);
 
             nodes = mergeStacks(nodes, curr);
-            //nodes.push(pair.first);
         }
     }
 
